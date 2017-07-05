@@ -4,7 +4,6 @@
   "description": "シネマサンシャインAPI  詳しくはこちら [https://sskts-api-development-mock.azurewebsites.net](https://sskts-api-development-mock.azurewebsites.net)",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm install",
     "start": "node index.js"
   },
   "keywords": [
