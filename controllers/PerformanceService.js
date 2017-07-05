@@ -6,7 +6,7 @@ exports.findPerformanceById = function(args, res, next) {
    * Returns a single performance
    *
    * performanceId String パフォーマンスID
-   * returns inline_response_200_1
+   * returns inline_response_200_2
    **/
   var examples = {};
   examples['application/json'] = {
@@ -25,7 +25,7 @@ exports.searchPerformances = function(args, res, next) {
    * パフォーマンス検索
    * 
    *
-   * returns inline_response_200
+   * returns inline_response_200_1
    **/
   var examples = {};
   examples['application/json'] = {

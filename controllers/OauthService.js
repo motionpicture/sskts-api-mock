@@ -1,15 +1,18 @@
 'use strict';
 
-exports.findScreenById = function(args, res, next) {
+exports.getAccessToken = function(args, res, next) {
   /**
-   * スクリーン取得
+   * OAuth
+   * 
    *
-   * screenId String ID
-   * returns inline_response_200_2
+   * data Data ID
+   * returns inline_response_200
    **/
   var examples = {};
   examples['application/json'] = {
-  "data" : "{}"
+  "access_token" : "",
+  "token_type" : "Bearer",
+  "expires_in" : ""
 };
   if (Object.keys(examples).length > 0) {
     res.setHeader('Content-Type', 'application/json');

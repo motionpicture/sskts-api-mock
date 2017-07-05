@@ -5,7 +5,7 @@ exports.findFilmById = function(args, res, next) {
    * 作品取得
    *
    * filmId String ID
-   * returns inline_response_200_1
+   * returns inline_response_200_2
    **/
   var examples = {};
   examples['application/json'] = {

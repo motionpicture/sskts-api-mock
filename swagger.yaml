@@ -29,6 +29,52 @@ schemes:
   - http
   - https
 paths:
+  /oauth/token:
+    post:
+      tags:
+       - oauth
+      summary: OAuth
+      description: ''
+      operationId: getAccessToken
+      produces:
+        - application/json
+      parameters:
+        - name: data
+          in: body
+          description: ID
+          required: true
+          schema:
+            type: object
+            properties:
+              grant_type:
+                type: string
+                enum: [client_credentials, password]
+                description: 認可タイプ
+              scopes:
+                type: array
+                items:
+                  type: string
+                description: 認可タイプ
+              client_id:
+                type: string
+                description: クライアントID
+              state:
+                type: string
+                description: 状態
+              username:
+                type: string
+                description: ユーザーネーム
+              password:
+                type: string
+                description: パスワード
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/Credentials'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /performances:
     get:
       tags:
@@ -39,7 +85,7 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        200:
           description: ok
           schema:
             type: object
@@ -48,8 +94,9 @@ paths:
                 type: array
                 items:
                   type: object
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
       security:
         - oauth_implicit:
             - performances
@@ -70,12 +117,12 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        200:
           $ref: '#/responses/OK'
-        '400':
-          $ref: '#/responses/BadRequest'
-        '404':
-          $ref: '#/responses/NotFound'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
+        404: {$ref: '#/responses/NotFound'}
       security:
         - api_key: []
   /films/{filmId}:
@@ -93,12 +140,12 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        200:
           $ref: '#/responses/OK'
-        '400':
-          $ref: '#/responses/BadRequest'
-        '404':
-          $ref: '#/responses/NotFound'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
+        404: {$ref: '#/responses/NotFound'}
   /screens/{screenId}:
     get:
       tags:
@@ -114,12 +161,12 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        200:
           $ref: '#/responses/OK'
-        '400':
-          $ref: '#/responses/BadRequest'
-        '404':
-          $ref: '#/responses/NotFound'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
+        404: {$ref: '#/responses/NotFound'}
   /theaters:
     get:
       tags:
@@ -129,10 +176,11 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        200:
           $ref: '#/responses/OK'
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /theaters/{theaterId}:
     get:
       tags:
@@ -148,12 +196,12 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        200:
           $ref: '#/responses/OK'
-        '400':
-          $ref: '#/responses/BadRequest'
-        '404':
-          $ref: '#/responses/NotFound'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
+        404: {$ref: '#/responses/NotFound'}
   /owners/me/profile:
     get:
       tags:
@@ -163,17 +211,20 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        200:
           description: 'ok'
           schema:
             type: object
             properties:
               data:
                 $ref: '#/definitions/OwnerProfile'
-        '400':
-          $ref: '#/responses/BadRequest'
-        '404':
-          $ref: '#/responses/NotFound'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
+        404: {$ref: '#/responses/NotFound'}
+      security:
+        - oauth_password: [owners.profile, owners.profile.read-only]
+
     put:
       tags:
         - owner
@@ -189,10 +240,10 @@ paths:
           schema:
             $ref: '#/definitions/OwnerProfile'
       responses:
-        '204':
-          $ref: '#/responses/NoContent'
-        '400':
-          $ref: '#/responses/BadRequest'
+        204: {$ref: '#/responses/NoContent'}
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /owners/me/cards:
     get:
       tags:
@@ -202,7 +253,7 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        200:
           description: 'ok'
           schema:
             type: object
@@ -211,8 +262,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/Card'
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
     post:
       tags:
         - owner
@@ -235,8 +287,9 @@ paths:
             properties:
               data:
                 $ref: '#/definitions/Card'
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /owners/me/cards/{cardId}:
     delete:
       tags:
@@ -252,10 +305,10 @@ paths:
           required: true
           type: string
       responses:
-        '204':
-          $ref: '#/responses/NoContent'
-        '400':
-          $ref: '#/responses/BadRequest'
+        204: {$ref: '#/responses/NoContent'}
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /owners/me/assets/seatReservation:
     get:
       tags:
@@ -265,7 +318,7 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        200:
           description: ok
           schema:
             type: object
@@ -274,8 +327,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/SeatReservationAsset'
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/startIfPossible:
     post:
       tags:
@@ -296,17 +350,17 @@ paths:
                 type: string
                 example: ''
       responses:
-        '200':
+        200:
           description: ok
           schema:
             type: object
             properties:
               data:
                 $ref: '#/definitions/Transaction'
-        '400':
-          $ref: '#/responses/BadRequest'
-        '404':
-          $ref: '#/responses/NotFound'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
+        404: {$ref: '#/responses/NotFound'}
   /transactions/makeInquiry:
     post:
       tags:
@@ -323,17 +377,17 @@ paths:
           schema:
             $ref: '#/definitions/TransactionInquiryKey'
       responses:
-        '200':
+        200:
           description: ok
           schema:
             type: object
             properties:
               data:
                 $ref: '#/definitions/Transaction'
-        '400':
-          $ref: '#/responses/BadRequest'
-        '404':
-          $ref: '#/responses/NotFound'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
+        404: {$ref: '#/responses/NotFound'}
   /transactions/{transactionId}/anonymousOwner:
     patch:
       tags:
@@ -368,10 +422,10 @@ paths:
                 type: string
                 example: ''  
       responses:
-        '204':
-          $ref: '#/responses/NoContent'
-        '400':
-          $ref: '#/responses/BadRequest'
+        204: {$ref: '#/responses/NoContent'}
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/owners/{ownerId}:
     put:
       tags:
@@ -403,7 +457,7 @@ paths:
                properties:
                 type:
                   type: string
-                  example: 'owners'
+                  enum: [owners]
                 id:
                   type: string
                   example: ''
@@ -424,7 +478,6 @@ paths:
                       example: ''
                     group:
                       type: string
-                      example: ''
                       enum:
                         - "ANONYMOUS"
                         - "MEMBER"
@@ -435,15 +488,16 @@ paths:
                       type: string
                       example: ''
       responses:
-        '200':
+        200:
           description: 'ok'
           schema:
             type: object
             properties:
               data:
                 $ref: '#/definitions/OwnerProfile'
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/owners/:ownerId/cards:
     post:
       tags:
@@ -472,8 +526,9 @@ paths:
             properties:
               data:
                 $ref: '#/definitions/Card'
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/authorizations/gmo:
     post:
       tags:
@@ -526,7 +581,7 @@ paths:
                 type: string
                 example: ''
       responses:
-        '200':
+        200:
           description: ok
           schema:
             type: object
@@ -536,12 +591,13 @@ paths:
                 properties:
                     type:
                       type: string
-                      example: 'authorizations'
+                      enum: [authorizations]
                     id:
                       type: string
                       example: ''
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/authorizations/coaSeatReservation:
     post:
       tags:
@@ -652,7 +708,7 @@ paths:
                 type: integer
                 example: ''
       responses:
-        '200':
+        200:
           description: ok
           schema:
             type: object
@@ -662,12 +718,13 @@ paths:
                 properties:
                     type:
                       type: string
-                      example: 'authorizations'
+                      enum: [authorizations]
                     id:
                       type: string
                       example: ''
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/authorizations/mvtk:
     post:
       tags:
@@ -759,7 +816,7 @@ paths:
                 type: string
                 example: ''
       responses:
-        '200':
+        200:
           description: ok
           schema:
             type: object
@@ -769,12 +826,13 @@ paths:
                 properties:
                     type:
                       type: string
-                      example: 'authorizations'
+                      enum: [authorizations]
                     id:
                       type: string
                       example: ''
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/authorizations/{authorizationId}:
     delete:
       tags:
@@ -795,10 +853,10 @@ paths:
           required: true
           type: string
       responses:
-        '204':
-          $ref: '#/responses/NoContent'
-        '400':
-          $ref: '#/responses/BadRequest'
+        204: {$ref: '#/responses/NoContent'}
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/enableInquiry:
     patch:
       tags:
@@ -820,10 +878,10 @@ paths:
           schema:
             $ref: '#/definitions/TransactionInquiryKey'
       responses:
-        '204':
-          $ref: '#/responses/NoContent'
-        '400':
-          $ref: '#/responses/BadRequest'
+        204: {$ref: '#/responses/NoContent'}
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/notifications/email:
     post:
       tags:
@@ -858,7 +916,7 @@ paths:
                 type: string
                 example: ''
       responses:
-        '200':
+        200:
           description: ok
           schema:
             type: object
@@ -868,12 +926,13 @@ paths:
                 properties:
                     type:
                       type: string
-                      example: 'notifications'
+                      enum: [notifications]
                     id:
                       type: string
                       example: ''
-        '400':
-          $ref: '#/responses/BadRequest'
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/notifications/{notificationId}:
     delete:
       tags:
@@ -894,10 +953,10 @@ paths:
           required: true
           type: string
       responses:
-        '204':
-          $ref: '#/responses/NoContent'
-        '400':
-          $ref: '#/responses/BadRequest'
+        204: {$ref: '#/responses/NoContent'}
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/close:
     patch:
       tags:
@@ -913,18 +972,22 @@ paths:
           required: true
           type: string
       responses:
-        '204':
-          $ref: '#/responses/NoContent'
-        '400':
-          $ref: '#/responses/BadRequest'
+        204: {$ref: '#/responses/NoContent'}
+        400: {$ref: '#/responses/BadRequest'}
+        401: {$ref: '#/responses/Unauthorized'}
+        403: {$ref: '#/responses/Forbidden'}
 securityDefinitions:
   oauth_password:
     type: oauth2
     tokenUrl: 'https://sskts-api-development-mock.azurewebsites.net/oauth/token'
     flow: password
     scopes:
-      performances: パフォーマンス更新
-      performances.read-only: パフォーマンス読み込み
+      owners.profile: プロフィール書き込み
+      owners.profile.read-only: プロフィール読み取り
+      owners.cards: カード書き込み
+      owners.cards.read-only: カード読み取り
+      owners.assets: 資産書き込み
+      owners.assets.read-only: 資産読み取り
   oauth_implicit:
     type: oauth2
     authorizationUrl: 'https://sskts-api-development-mock.azurewebsites.net/oauth/token'
@@ -937,12 +1000,27 @@ securityDefinitions:
     name: api_key
     in: header
 definitions:
+  Credentials:
+    type: object
+    properties:
+      access_token:
+        type: string
+        example: ''
+        description: アクセストークン
+      token_type:
+        type: string
+        example: 'Bearer'
+        description: トークンタイプ
+      expires_in:
+        type: integer
+        example: ''
+        description: 有効期間(秒)
   OwnerProfile:
     type: object
     properties:
       type:
         type: string
-        example: owners
+        enum: [owners]
       id:
         type: string
       attributes:
@@ -968,7 +1046,7 @@ definitions:
         properties:
           type:
             type: string
-            example: cards
+            enum: [cards]
           attributes:
             type: object
             properties:
@@ -987,7 +1065,7 @@ definitions:
     properties:
       type:
         type: string
-        example: cards
+        enum: [cards]
       id:
         type: string
         example: ''
@@ -1021,7 +1099,7 @@ definitions:
     properties:
       type:
         type: string
-        example: assets
+        enum: [assets]
       id:
         type: string
         example: ''
@@ -1150,7 +1228,7 @@ definitions:
     properties:
       type:
         type: string
-        example: transactions
+        enum: [transactions]
       id:
         type: string
         example: ''
@@ -1211,6 +1289,7 @@ definitions:
         items:
           type: string
 responses:
+  # 200
   OK:
     description: ok
     schema:
@@ -1218,15 +1297,10 @@ responses:
       properties:
         data:
           type: object
+  # 204
   NoContent:
     description: レスポンスなし
-  NotFound:
-    description: 見つかりませんでした
-    schema:
-      type: object
-      properties:
-        data:
-          type: object
+  # 400
   BadRequest:
     description: 不適切なリクエスト
     schema:
@@ -1246,3 +1320,23 @@ responses:
                 properties:
                   parameter:
                     type: string
+  # 401
+  Unauthorized:
+    description: 認証が必要
+    schema:
+      type: string
+      enum: [Unauthorized]
+  # 403
+  Forbidden:
+    description: アクセス権限なし
+    schema:
+      type: string
+      enum: [Forbidden]
+  # 404
+  NotFound:
+    description: 見つかりませんでした
+    schema:
+      type: object
+      properties:
+        data:
+          type: object

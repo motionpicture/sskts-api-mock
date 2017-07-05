@@ -4,7 +4,7 @@ exports.createMyCard = function(args, res, next) {
   /**
    * 会員カード追加
    *
-   * data Data_1 ID
+   * data Data_2 ID
    * returns inline_response_201
    **/
   var examples = {};
@@ -18,7 +18,7 @@ exports.createMyCard = function(args, res, next) {
       "holder_name" : ""
     },
     "id" : "",
-    "type" : "cards"
+    "type" : "aeiou"
   }
 };
   if (Object.keys(examples).length > 0) {
@@ -43,7 +43,7 @@ exports.findMyCards = function(args, res, next) {
   /**
    * 会員カード検索
    *
-   * returns inline_response_200_3
+   * returns inline_response_200_4
    **/
   var examples = {};
   examples['application/json'] = {
@@ -56,7 +56,7 @@ exports.findMyCards = function(args, res, next) {
       "holder_name" : ""
     },
     "id" : "",
-    "type" : "cards"
+    "type" : "aeiou"
   } ]
 };
   if (Object.keys(examples).length > 0) {
@@ -71,7 +71,7 @@ exports.findMyProfile = function(args, res, next) {
   /**
    * 会員プロフィール取得
    *
-   * returns inline_response_200_2
+   * returns inline_response_200_3
    **/
   var examples = {};
   examples['application/json'] = {
@@ -83,7 +83,7 @@ exports.findMyProfile = function(args, res, next) {
       "email" : ""
     },
     "id" : "aeiou",
-    "type" : "owners"
+    "type" : "aeiou"
   }
 };
   if (Object.keys(examples).length > 0) {
@@ -98,7 +98,7 @@ exports.findMySeatReservationAssets = function(args, res, next) {
   /**
    * 会員座席予約資産検索
    *
-   * returns inline_response_200_4
+   * returns inline_response_200_5
    **/
   var examples = {};
   examples['application/json'] = {
@@ -147,7 +147,7 @@ exports.findMySeatReservationAssets = function(args, res, next) {
       "film_kbn_eizou" : ""
     },
     "id" : "",
-    "type" : "assets"
+    "type" : "aeiou"
   } ]
 };
   if (Object.keys(examples).length > 0) {
@@ -162,7 +162,7 @@ exports.updateMyProfile = function(args, res, next) {
   /**
    * 会員プロフィール更新
    *
-   * data Data ID
+   * data Data_1 ID
    * no response value expected for this operation
    **/
   res.end();

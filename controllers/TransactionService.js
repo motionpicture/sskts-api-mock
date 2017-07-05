@@ -15,7 +15,7 @@ exports.createCardOfOwnerInTransaction = function(args, res, next) {
    * 取引中所有者カード追加
    *
    * transactionId String ID
-   * data Data_6 カード情報
+   * data Data_7 カード情報
    * returns inline_response_201
    **/
   var examples = {};
@@ -29,7 +29,7 @@ exports.createCardOfOwnerInTransaction = function(args, res, next) {
       "holder_name" : ""
     },
     "id" : "",
-    "type" : "cards"
+    "type" : "aeiou"
   }
 };
   if (Object.keys(examples).length > 0) {
@@ -45,14 +45,14 @@ exports.createEmailNotification = function(args, res, next) {
    * 取引通知作成
    *
    * transactionId String 取引ID
-   * data Data_11 メール通知データ
-   * returns inline_response_200_7
+   * data Data_12 メール通知データ
+   * returns inline_response_200_8
    **/
   var examples = {};
   examples['application/json'] = {
   "data" : {
     "id" : "",
-    "type" : "notifications"
+    "type" : "aeiou"
   }
 };
   if (Object.keys(examples).length > 0) {
@@ -68,14 +68,14 @@ exports.createGMOAuthorization = function(args, res, next) {
    * GMO承認追加
    *
    * transactionId String 取引ID
-   * data Data_7 GMOオーソリデータ
-   * returns inline_response_200_6
+   * data Data_8 GMOオーソリデータ
+   * returns inline_response_200_7
    **/
   var examples = {};
   examples['application/json'] = {
   "data" : {
     "id" : "",
-    "type" : "authorizations"
+    "type" : "aeiou"
   }
 };
   if (Object.keys(examples).length > 0) {
@@ -91,14 +91,14 @@ exports.createMvtkAuthorization = function(args, res, next) {
    * ムビチケ承認追加
    *
    * transactionId String 取引ID
-   * data Data_9 ムビチケ着券データ
-   * returns inline_response_200_6
+   * data Data_10 ムビチケ着券データ
+   * returns inline_response_200_7
    **/
   var examples = {};
   examples['application/json'] = {
   "data" : {
     "id" : "",
-    "type" : "authorizations"
+    "type" : "aeiou"
   }
 };
   if (Object.keys(examples).length > 0) {
@@ -114,14 +114,14 @@ exports.createSeatReservationAuthorization = function(args, res, next) {
    * 座席予約承認追加
    *
    * transactionId String 取引ID
-   * data Data_8 COA仮予約データ
-   * returns inline_response_200_6
+   * data Data_9 COA仮予約データ
+   * returns inline_response_200_7
    **/
   var examples = {};
   examples['application/json'] = {
   "data" : {
     "id" : "",
-    "type" : "authorizations"
+    "type" : "aeiou"
   }
 };
   if (Object.keys(examples).length > 0) {
@@ -159,7 +159,7 @@ exports.enableInquiryOfTransaction = function(args, res, next) {
    * 取引照会キー作成
    *
    * transactionId String 取引ID
-   * data Data_10 取引照会キー
+   * data Data_11 取引照会キー
    * no response value expected for this operation
    **/
   res.end();
@@ -169,8 +169,8 @@ exports.makeInquiryOfTransaction = function(args, res, next) {
   /**
    * 取引照会
    *
-   * data Data_3 照会キー
-   * returns inline_response_200_5
+   * data Data_4 照会キー
+   * returns inline_response_200_6
    **/
   var examples = {};
   examples['application/json'] = {
@@ -185,7 +185,7 @@ exports.makeInquiryOfTransaction = function(args, res, next) {
       "status" : ""
     },
     "id" : "",
-    "type" : "transactions"
+    "type" : "aeiou"
   }
 };
   if (Object.keys(examples).length > 0) {
@@ -200,8 +200,8 @@ exports.startTransaction = function(args, res, next) {
   /**
    * 取引開始
    *
-   * data Data_2 
-   * returns inline_response_200_5
+   * data Data_3 
+   * returns inline_response_200_6
    **/
   var examples = {};
   examples['application/json'] = {
@@ -216,7 +216,7 @@ exports.startTransaction = function(args, res, next) {
       "status" : ""
     },
     "id" : "",
-    "type" : "transactions"
+    "type" : "aeiou"
   }
 };
   if (Object.keys(examples).length > 0) {
@@ -232,7 +232,7 @@ exports.updateAnonymousOwner = function(args, res, next) {
    * 取引中匿名所有者更新
    *
    * transactionId String ID
-   * data Data_4 プロフィール
+   * data Data_5 プロフィール
    * no response value expected for this operation
    **/
   res.end();
@@ -244,8 +244,8 @@ exports.updateOwnerInTransaction = function(args, res, next) {
    *
    * transactionId String 取引ID
    * ownerId String 所有者ID
-   * data Data_5 プロフィール
-   * returns inline_response_200_2
+   * data Data_6 プロフィール
+   * returns inline_response_200_3
    **/
   var examples = {};
   examples['application/json'] = {
@@ -257,7 +257,7 @@ exports.updateOwnerInTransaction = function(args, res, next) {
       "email" : ""
     },
     "id" : "aeiou",
-    "type" : "owners"
+    "type" : "aeiou"
   }
 };
   if (Object.keys(examples).length > 0) {

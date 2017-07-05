@@ -29,6 +29,44 @@ schemes:
 - "http"
 - "https"
 paths:
+  /oauth/token:
+    post:
+      tags:
+      - "oauth"
+      summary: "OAuth"
+      description: ""
+      operationId: "getAccessToken"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "data"
+        description: "ID"
+        required: true
+        schema:
+          $ref: "#/definitions/data"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
+      x-swagger-router-controller: "Oauth"
   /performances:
     get:
       tags:
@@ -43,11 +81,23 @@ paths:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200"
+            $ref: "#/definitions/inline_response_200_1"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       security:
       - oauth_implicit:
         - "performances"
@@ -72,15 +122,27 @@ paths:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
         404:
           description: "見つかりませんでした"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
       security:
       - api_key: []
       x-swagger-router-controller: "Performance"
@@ -102,15 +164,27 @@ paths:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
         404:
           description: "見つかりませんでした"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
       x-swagger-router-controller: "Film"
   /screens/{screenId}:
     get:
@@ -130,15 +204,27 @@ paths:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
         404:
           description: "見つかりませんでした"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
       x-swagger-router-controller: "Screen"
   /theaters:
     get:
@@ -153,11 +239,23 @@ paths:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Theater"
   /theaters/{theaterId}:
     get:
@@ -177,15 +275,27 @@ paths:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
         404:
           description: "見つかりませんでした"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
       x-swagger-router-controller: "Theater"
   /owners/me/profile:
     get:
@@ -200,15 +310,31 @@ paths:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_2"
+            $ref: "#/definitions/inline_response_200_3"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
         404:
           description: "見つかりませんでした"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
+      security:
+      - oauth_password:
+        - "owners.profile"
+        - "owners.profile.read-only"
       x-swagger-router-controller: "Owner"
     put:
       tags:
@@ -223,7 +349,7 @@ paths:
         description: "ID"
         required: true
         schema:
-          $ref: "#/definitions/data"
+          $ref: "#/definitions/data_1"
       responses:
         204:
           description: "レスポンスなし"
@@ -231,6 +357,18 @@ paths:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Owner"
   /owners/me/cards:
     get:
@@ -245,11 +383,23 @@ paths:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_3"
+            $ref: "#/definitions/inline_response_200_4"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Owner"
     post:
       tags:
@@ -264,7 +414,7 @@ paths:
         description: "ID"
         required: true
         schema:
-          $ref: "#/definitions/data_1"
+          $ref: "#/definitions/data_2"
       responses:
         201:
           description: "ok"
@@ -274,6 +424,18 @@ paths:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Owner"
   /owners/me/cards/{cardId}:
     delete:
@@ -296,6 +458,18 @@ paths:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Owner"
   /owners/me/assets/seatReservation:
     get:
@@ -310,11 +484,23 @@ paths:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_4"
+            $ref: "#/definitions/inline_response_200_5"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Owner"
   /transactions/startIfPossible:
     post:
@@ -329,20 +515,32 @@ paths:
         name: "data"
         required: true
         schema:
-          $ref: "#/definitions/data_2"
+          $ref: "#/definitions/data_3"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_5"
+            $ref: "#/definitions/inline_response_200_6"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
         404:
           description: "見つかりませんでした"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
       x-swagger-router-controller: "Transaction"
   /transactions/makeInquiry:
     post:
@@ -358,20 +556,32 @@ paths:
         description: "照会キー"
         required: true
         schema:
-          $ref: "#/definitions/data_3"
+          $ref: "#/definitions/data_4"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_5"
+            $ref: "#/definitions/inline_response_200_6"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
         404:
           description: "見つかりませんでした"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_2"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/anonymousOwner:
     patch:
@@ -392,7 +602,7 @@ paths:
         description: "プロフィール"
         required: true
         schema:
-          $ref: "#/definitions/data_4"
+          $ref: "#/definitions/data_5"
       responses:
         204:
           description: "レスポンスなし"
@@ -400,6 +610,18 @@ paths:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/owners/{ownerId}:
     put:
@@ -425,16 +647,28 @@ paths:
         description: "プロフィール"
         required: true
         schema:
-          $ref: "#/definitions/data_5"
+          $ref: "#/definitions/data_6"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_2"
+            $ref: "#/definitions/inline_response_200_3"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/owners/:ownerId/cards:
     post:
@@ -455,7 +689,7 @@ paths:
         description: "カード情報"
         required: true
         schema:
-          $ref: "#/definitions/data_6"
+          $ref: "#/definitions/data_7"
       responses:
         201:
           description: "ok"
@@ -465,6 +699,18 @@ paths:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/authorizations/gmo:
     post:
@@ -485,16 +731,28 @@ paths:
         description: "GMOオーソリデータ"
         required: true
         schema:
-          $ref: "#/definitions/data_7"
+          $ref: "#/definitions/data_8"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_6"
+            $ref: "#/definitions/inline_response_200_7"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/authorizations/coaSeatReservation:
     post:
@@ -515,16 +773,28 @@ paths:
         description: "COA仮予約データ"
         required: true
         schema:
-          $ref: "#/definitions/data_8"
+          $ref: "#/definitions/data_9"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_6"
+            $ref: "#/definitions/inline_response_200_7"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/authorizations/mvtk:
     post:
@@ -545,16 +815,28 @@ paths:
         description: "ムビチケ着券データ"
         required: true
         schema:
-          $ref: "#/definitions/data_9"
+          $ref: "#/definitions/data_10"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_6"
+            $ref: "#/definitions/inline_response_200_7"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/authorizations/{authorizationId}:
     delete:
@@ -582,6 +864,18 @@ paths:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/enableInquiry:
     patch:
@@ -602,7 +896,7 @@ paths:
         description: "取引照会キー"
         required: true
         schema:
-          $ref: "#/definitions/data_10"
+          $ref: "#/definitions/data_11"
       responses:
         204:
           description: "レスポンスなし"
@@ -610,6 +904,18 @@ paths:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/notifications/email:
     post:
@@ -630,16 +936,28 @@ paths:
         description: "メール通知データ"
         required: true
         schema:
-          $ref: "#/definitions/data_11"
+          $ref: "#/definitions/data_12"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_7"
+            $ref: "#/definitions/inline_response_200_8"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/notifications/{notificationId}:
     delete:
@@ -667,6 +985,18 @@ paths:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/close:
     patch:
@@ -689,6 +1019,18 @@ paths:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
       x-swagger-router-controller: "Transaction"
 securityDefinitions:
   oauth_password:
@@ -696,8 +1038,12 @@ securityDefinitions:
     tokenUrl: "https://sskts-api-development-mock.azurewebsites.net/oauth/token"
     flow: "password"
     scopes:
-      performances: "パフォーマンス更新"
-      performances.read-only: "パフォーマンス読み込み"
+      owners.profile: "プロフィール書き込み"
+      owners.profile.read-only: "プロフィール読み取り"
+      owners.cards: "カード書き込み"
+      owners.cards.read-only: "カード読み取り"
+      owners.assets: "資産書き込み"
+      owners.assets.read-only: "資産読み取り"
   oauth_implicit:
     type: "oauth2"
     authorizationUrl: "https://sskts-api-development-mock.azurewebsites.net/oauth/token"
@@ -710,16 +1056,32 @@ securityDefinitions:
     name: "api_key"
     in: "header"
 definitions:
+  Credentials:
+    type: "object"
+    properties:
+      access_token:
+        type: "string"
+        example: ""
+        description: "アクセストークン"
+      token_type:
+        type: "string"
+        example: "Bearer"
+        description: "トークンタイプ"
+      expires_in:
+        type: "integer"
+        example: ""
+        description: "有効期間(秒)"
   OwnerProfile:
     type: "object"
     properties:
       type:
         type: "string"
-        example: "owners"
+        enum:
+        - "owners"
       id:
         type: "string"
       attributes:
-        $ref: "#/definitions/inline_response_200_2_data_attributes"
+        $ref: "#/definitions/inline_response_200_3_data_attributes"
   UnsavedCard:
     type: "object"
     properties:
@@ -730,12 +1092,13 @@ definitions:
     properties:
       type:
         type: "string"
-        example: "cards"
+        enum:
+        - "cards"
       id:
         type: "string"
         example: ""
       attributes:
-        $ref: "#/definitions/inline_response_200_3_attributes"
+        $ref: "#/definitions/inline_response_200_4_attributes"
   MultilingualString:
     type: "object"
     properties:
@@ -748,23 +1111,25 @@ definitions:
     properties:
       type:
         type: "string"
-        example: "assets"
+        enum:
+        - "assets"
       id:
         type: "string"
         example: ""
       attributes:
-        $ref: "#/definitions/inline_response_200_4_attributes"
+        $ref: "#/definitions/inline_response_200_5_attributes"
   Transaction:
     type: "object"
     properties:
       type:
         type: "string"
-        example: "transactions"
+        enum:
+        - "transactions"
       id:
         type: "string"
         example: ""
       attributes:
-        $ref: "#/definitions/inline_response_200_5_data_attributes"
+        $ref: "#/definitions/inline_response_200_6_data_attributes"
   TransactionInquiryKey:
     type: "object"
     properties:
@@ -798,13 +1163,46 @@ definitions:
           wrapped: true
         items:
           type: "string"
+  data:
+    type: "object"
+    properties:
+      grant_type:
+        type: "string"
+        description: "認可タイプ"
+        enum:
+        - "client_credentials"
+        - "password"
+      scopes:
+        type: "array"
+        description: "認可タイプ"
+        items:
+          type: "string"
+      client_id:
+        type: "string"
+        description: "クライアントID"
+      state:
+        type: "string"
+        description: "状態"
+      username:
+        type: "string"
+        description: "ユーザーネーム"
+      password:
+        type: "string"
+        description: "パスワード"
   inline_response_200:
     properties:
-      data:
-        type: "array"
-        items:
-          type: "object"
-          properties: {}
+      access_token:
+        type: "string"
+        example: ""
+        description: "アクセストークン"
+      token_type:
+        type: "string"
+        example: "Bearer"
+        description: "トークンタイプ"
+      expires_in:
+        type: "integer"
+        example: ""
+        description: "有効期間(秒)"
   inline_response_400_source:
     properties:
       parameter:
@@ -826,9 +1224,16 @@ definitions:
   inline_response_200_1:
     properties:
       data:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+  inline_response_200_2:
+    properties:
+      data:
         type: "object"
         properties: {}
-  inline_response_200_2_data_attributes:
+  inline_response_200_3_data_attributes:
     properties:
       name_first:
         type: "string"
@@ -842,30 +1247,32 @@ definitions:
       tel:
         type: "string"
         example: ""
-  inline_response_200_2_data:
+  inline_response_200_3_data:
     properties:
       type:
         type: "string"
-        example: "owners"
+        enum:
+        - "owners"
       id:
         type: "string"
       attributes:
-        $ref: "#/definitions/inline_response_200_2_data_attributes"
-  inline_response_200_2:
+        $ref: "#/definitions/inline_response_200_3_data_attributes"
+  inline_response_200_3:
     properties:
       data:
-        $ref: "#/definitions/inline_response_200_2_data"
-  data:
+        $ref: "#/definitions/inline_response_200_3_data"
+  data_1:
     type: "object"
     properties:
       type:
         type: "string"
-        example: "owners"
+        enum:
+        - "owners"
       id:
         type: "string"
       attributes:
-        $ref: "#/definitions/inline_response_200_2_data_attributes"
-  inline_response_200_3_attributes:
+        $ref: "#/definitions/inline_response_200_3_data_attributes"
+  inline_response_200_4_attributes:
     properties:
       card_seq:
         type: "string"
@@ -882,22 +1289,23 @@ definitions:
       holder_name:
         type: "string"
         example: ""
-  inline_response_200_3_data:
+  inline_response_200_4_data:
     properties:
       type:
         type: "string"
-        example: "cards"
+        enum:
+        - "cards"
       id:
         type: "string"
         example: ""
       attributes:
-        $ref: "#/definitions/inline_response_200_3_attributes"
-  inline_response_200_3:
+        $ref: "#/definitions/inline_response_200_4_attributes"
+  inline_response_200_4:
     properties:
       data:
         type: "array"
         items:
-          $ref: "#/definitions/inline_response_200_3_data"
+          $ref: "#/definitions/inline_response_200_4_data"
   ownersmecards_data_attributes:
     properties:
       card_no:
@@ -914,10 +1322,11 @@ definitions:
     properties:
       type:
         type: "string"
-        example: "cards"
+        enum:
+        - "cards"
       attributes:
         $ref: "#/definitions/ownersmecards_data_attributes"
-  data_1:
+  data_2:
     type: "object"
     properties:
       data:
@@ -925,14 +1334,14 @@ definitions:
   inline_response_201:
     properties:
       data:
-        $ref: "#/definitions/inline_response_200_3_data"
-  inline_response_200_4_attributes_ticket_name:
+        $ref: "#/definitions/inline_response_200_4_data"
+  inline_response_200_5_attributes_ticket_name:
     properties:
       en:
         type: "string"
       ja:
         type: "string"
-  inline_response_200_4_attributes:
+  inline_response_200_5_attributes:
     properties:
       performance:
         type: "string"
@@ -947,7 +1356,7 @@ definitions:
         type: "string"
         example: ""
       ticket_name:
-        $ref: "#/definitions/inline_response_200_4_attributes_ticket_name"
+        $ref: "#/definitions/inline_response_200_5_attributes_ticket_name"
       ticket_name_kana:
         type: "string"
         example: ""
@@ -1013,16 +1422,16 @@ definitions:
         type: "string"
         example: ""
       theater_name:
-        $ref: "#/definitions/inline_response_200_4_attributes_ticket_name"
+        $ref: "#/definitions/inline_response_200_5_attributes_ticket_name"
       theater_name_kana:
         type: "string"
         example: ""
       theater_address:
-        $ref: "#/definitions/inline_response_200_4_attributes_ticket_name"
+        $ref: "#/definitions/inline_response_200_5_attributes_ticket_name"
       screen_name:
-        $ref: "#/definitions/inline_response_200_4_attributes_ticket_name"
+        $ref: "#/definitions/inline_response_200_5_attributes_ticket_name"
       film_name:
-        $ref: "#/definitions/inline_response_200_4_attributes_ticket_name"
+        $ref: "#/definitions/inline_response_200_5_attributes_ticket_name"
       film_name_kana:
         type: "string"
         example: ""
@@ -1051,30 +1460,31 @@ definitions:
       film_copyright:
         type: "string"
         example: ""
-  inline_response_200_4_data:
+  inline_response_200_5_data:
     properties:
       type:
         type: "string"
-        example: "assets"
+        enum:
+        - "assets"
       id:
         type: "string"
         example: ""
       attributes:
-        $ref: "#/definitions/inline_response_200_4_attributes"
-  inline_response_200_4:
+        $ref: "#/definitions/inline_response_200_5_attributes"
+  inline_response_200_5:
     properties:
       data:
         type: "array"
         items:
-          $ref: "#/definitions/inline_response_200_4_data"
-  data_2:
+          $ref: "#/definitions/inline_response_200_5_data"
+  data_3:
     type: "object"
     properties:
       expires_at:
         type: "string"
         example: ""
         description: "取引期限"
-  inline_response_200_5_data_attributes_owners:
+  inline_response_200_6_data_attributes_owners:
     properties:
       id:
         type: "string"
@@ -1082,13 +1492,13 @@ definitions:
       group:
         type: "string"
         example: ""
-  inline_response_200_5_data_attributes:
+  inline_response_200_6_data_attributes:
     properties:
       status:
         type: "string"
         example: ""
       owners:
-        $ref: "#/definitions/inline_response_200_5_data_attributes_owners"
+        $ref: "#/definitions/inline_response_200_6_data_attributes_owners"
       expires_at:
         type: "string"
         format: "date-time"
@@ -1097,21 +1507,22 @@ definitions:
         type: "string"
         format: "date-time"
         example: ""
-  inline_response_200_5_data:
+  inline_response_200_6_data:
     properties:
       type:
         type: "string"
-        example: "transactions"
+        enum:
+        - "transactions"
       id:
         type: "string"
         example: ""
       attributes:
-        $ref: "#/definitions/inline_response_200_5_data_attributes"
-  inline_response_200_5:
+        $ref: "#/definitions/inline_response_200_6_data_attributes"
+  inline_response_200_6:
     properties:
       data:
-        $ref: "#/definitions/inline_response_200_5_data"
-  data_3:
+        $ref: "#/definitions/inline_response_200_6_data"
+  data_4:
     type: "object"
     properties:
       inquiry_theater:
@@ -1126,7 +1537,7 @@ definitions:
         type: "string"
         example: ""
         description: "電話番号"
-  data_4:
+  data_5:
     type: "object"
     properties:
       name_first:
@@ -1157,7 +1568,6 @@ definitions:
         example: ""
       group:
         type: "string"
-        example: ""
         enum:
         - "ANONYMOUS"
         - "MEMBER"
@@ -1171,23 +1581,24 @@ definitions:
     properties:
       type:
         type: "string"
-        example: "owners"
+        enum:
+        - "owners"
       id:
         type: "string"
         example: ""
       attributes:
         $ref: "#/definitions/transactionstransactionIdownersownerId_data_attributes"
-  data_5:
-    type: "object"
-    properties:
-      data:
-        $ref: "#/definitions/transactionstransactionIdownersownerId_data"
   data_6:
     type: "object"
     properties:
       data:
-        $ref: "#/definitions/ownersmecards_data"
+        $ref: "#/definitions/transactionstransactionIdownersownerId_data"
   data_7:
+    type: "object"
+    properties:
+      data:
+        $ref: "#/definitions/ownersmecards_data"
+  data_8:
     type: "object"
     properties:
       owner_from:
@@ -1220,18 +1631,19 @@ definitions:
       gmo_pay_type:
         type: "string"
         example: ""
-  inline_response_200_6_data:
+  inline_response_200_7_data:
     properties:
       type:
         type: "string"
-        example: "authorizations"
+        enum:
+        - "authorizations"
       id:
         type: "string"
         example: ""
-  inline_response_200_6:
+  inline_response_200_7:
     properties:
       data:
-        $ref: "#/definitions/inline_response_200_6_data"
+        $ref: "#/definitions/inline_response_200_7_data"
   transactionstransactionIdauthorizationscoaSeatReservation_seats:
     properties:
       performance:
@@ -1247,7 +1659,7 @@ definitions:
         type: "string"
         example: ""
       ticket_name:
-        $ref: "#/definitions/inline_response_200_4_attributes_ticket_name"
+        $ref: "#/definitions/inline_response_200_5_attributes_ticket_name"
       ticket_name_kana:
         type: "string"
         example: ""
@@ -1287,7 +1699,7 @@ definitions:
       mvtk_sales_price:
         type: "integer"
         example: ""
-  data_8:
+  data_9:
     type: "object"
     properties:
       owner_from:
@@ -1349,7 +1761,7 @@ definitions:
       zsk_cd:
         type: "string"
         example: ""
-  data_9:
+  data_10:
     type: "object"
     properties:
       owner_from:
@@ -1399,7 +1811,7 @@ definitions:
       skhn_cd:
         type: "string"
         example: ""
-  data_10:
+  data_11:
     type: "object"
     properties:
       inquiry_theater:
@@ -1414,7 +1826,7 @@ definitions:
         type: "string"
         example: ""
         description: "電話番号"
-  data_11:
+  data_12:
     type: "object"
     properties:
       from:
@@ -1429,18 +1841,19 @@ definitions:
       content:
         type: "string"
         example: ""
-  inline_response_200_7_data:
+  inline_response_200_8_data:
     properties:
       type:
         type: "string"
-        example: "notifications"
+        enum:
+        - "notifications"
       id:
         type: "string"
         example: ""
-  inline_response_200_7:
+  inline_response_200_8:
     properties:
       data:
-        $ref: "#/definitions/inline_response_200_7_data"
+        $ref: "#/definitions/inline_response_200_8_data"
 responses:
   OK:
     description: "ok"
@@ -1452,14 +1865,6 @@ responses:
           properties: {}
   NoContent:
     description: "レスポンスなし"
-  NotFound:
-    description: "見つかりませんでした"
-    schema:
-      type: "object"
-      properties:
-        data:
-          type: "object"
-          properties: {}
   BadRequest:
     description: "不適切なリクエスト"
     schema:
@@ -1479,3 +1884,23 @@ responses:
                 properties:
                   parameter:
                     type: "string"
+  Unauthorized:
+    description: "認証が必要"
+    schema:
+      type: "string"
+      enum:
+      - "Unauthorized"
+  Forbidden:
+    description: "アクセス権限なし"
+    schema:
+      type: "string"
+      enum:
+      - "Forbidden"
+  NotFound:
+    description: "見つかりませんでした"
+    schema:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          properties: {}

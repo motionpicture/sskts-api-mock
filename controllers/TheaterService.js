@@ -5,7 +5,7 @@ exports.findTheaterById = function(args, res, next) {
    * 劇場取得
    *
    * theaterId String ID
-   * returns inline_response_200_1
+   * returns inline_response_200_2
    **/
   var examples = {};
   examples['application/json'] = {
@@ -23,7 +23,7 @@ exports.findTheatersById = function(args, res, next) {
   /**
    * 劇場検索
    *
-   * returns inline_response_200_1
+   * returns inline_response_200_2
    **/
   var examples = {};
   examples['application/json'] = {
