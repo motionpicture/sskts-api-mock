@@ -5,7 +5,22 @@ var http = require('http');
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var fs = require('fs');
-var serverPort = process.env.PORT | 8080;
+var serverPort = normalizePort((process.env.PORT === undefined) ? '8080' : process.env.PORT);
+function normalizePort(val) {
+  const portNumber = parseInt(val, 10);
+
+  if (isNaN(portNumber)) {
+    // named pipe
+    return val;
+  }
+
+  if (portNumber >= 0) {
+    // port number
+    return portNumber;
+  }
+
+  return false;
+}
 
 // swaggerRouter configuration
 var options = {
