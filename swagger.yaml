@@ -98,9 +98,7 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
       security:
-        - oauth_implicit:
-            - performances
-            - performances.read-only
+        - oauth_application: [performances, performances.read-only]
   /performances/{performanceId}:
     get:
       tags:
@@ -123,8 +121,6 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
         404: {$ref: '#/responses/NotFound'}
-      security:
-        - api_key: []
   /films/{filmId}:
     get:
       tags:
@@ -979,7 +975,7 @@ paths:
 securityDefinitions:
   oauth_password:
     type: oauth2
-    tokenUrl: 'https://sskts-api-development-mock.azurewebsites.net/oauth/token'
+    tokenUrl: 'http://sskts-api-development-mock.azurewebsites.net/oauth/token'
     flow: password
     scopes:
       owners.profile: プロフィール書き込み
@@ -988,17 +984,23 @@ securityDefinitions:
       owners.cards.read-only: カード読み取り
       owners.assets: 資産書き込み
       owners.assets.read-only: 資産読み取り
-  oauth_implicit:
+  oauth_application:
     type: oauth2
-    authorizationUrl: 'https://sskts-api-development-mock.azurewebsites.net/oauth/token'
-    flow: implicit
+    tokenUrl: 'http://sskts-api-development-mock.azurewebsites.net/oauth/token'
+    flow: application
     scopes:
-      performances: パフォーマンス更新
-      performances.read-only: パフォーマンス読み込み
-  api_key:
-    type: apiKey
-    name: api_key
-    in: header
+      performances: パフォーマンス書き込み
+      performances.read-only: パフォーマンス読み取り
+      films: 作品書き込み
+      films.read-only: 作品読み取り
+      screens: スクリーン書き込み
+      screens.read-only: スクリーン読み取り
+      transactions: 取引書き込み
+      transactions.read-only: 取引読み取り
+      transactions.owners: 取引所有者書き込み
+      transactions.owners.cards: 取引所有者カード書き込み
+      transactions.authorizations: 取引承認書き込み
+      transactions.notifications: 取引通知書き込み
 definitions:
   Credentials:
     type: object
@@ -1272,22 +1274,9 @@ definitions:
         example: ''
   Performance:
     type: object
-    required:
-      - name
-      - photoUrls
     properties:
-      id:
+      day:
         type: string
-      name:
-        type: string
-        example: doggie
-      photoUrls:
-        type: array
-        xml:
-          name: photoUrl
-          wrapped: true
-        items:
-          type: string
 responses:
   # 200
   OK:
