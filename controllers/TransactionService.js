@@ -4,7 +4,7 @@ exports.closeTransaction = function(args, res, next) {
   /**
    * 取引成立
    *
-   * id String ID
+   * transactionId String 取引ID
    * no response value expected for this operation
    **/
   res.end();
@@ -44,12 +44,16 @@ exports.createEmailNotification = function(args, res, next) {
   /**
    * 取引通知作成
    *
-   * id String ID
-   * returns inline_response_200_1
+   * transactionId String 取引ID
+   * data Data_11 メール通知データ
+   * returns inline_response_200_7
    **/
   var examples = {};
   examples['application/json'] = {
-  "data" : "{}"
+  "data" : {
+    "id" : "",
+    "type" : "notifications"
+  }
 };
   if (Object.keys(examples).length > 0) {
     res.setHeader('Content-Type', 'application/json');
@@ -63,12 +67,16 @@ exports.createGMOAuthorization = function(args, res, next) {
   /**
    * GMO承認追加
    *
-   * transactionId String ID
-   * returns inline_response_200_1
+   * transactionId String 取引ID
+   * data Data_7 GMOオーソリデータ
+   * returns inline_response_200_6
    **/
   var examples = {};
   examples['application/json'] = {
-  "data" : "{}"
+  "data" : {
+    "id" : "",
+    "type" : "authorizations"
+  }
 };
   if (Object.keys(examples).length > 0) {
     res.setHeader('Content-Type', 'application/json');
@@ -82,12 +90,16 @@ exports.createMvtkAuthorization = function(args, res, next) {
   /**
    * ムビチケ承認追加
    *
-   * transactionId String ID
-   * returns inline_response_200_1
+   * transactionId String 取引ID
+   * data Data_9 ムビチケ着券データ
+   * returns inline_response_200_6
    **/
   var examples = {};
   examples['application/json'] = {
-  "data" : "{}"
+  "data" : {
+    "id" : "",
+    "type" : "authorizations"
+  }
 };
   if (Object.keys(examples).length > 0) {
     res.setHeader('Content-Type', 'application/json');
@@ -101,12 +113,16 @@ exports.createSeatReservationAuthorization = function(args, res, next) {
   /**
    * 座席予約承認追加
    *
-   * transactionId String ID
-   * returns inline_response_200_1
+   * transactionId String 取引ID
+   * data Data_8 COA仮予約データ
+   * returns inline_response_200_6
    **/
   var examples = {};
   examples['application/json'] = {
-  "data" : "{}"
+  "data" : {
+    "id" : "",
+    "type" : "authorizations"
+  }
 };
   if (Object.keys(examples).length > 0) {
     res.setHeader('Content-Type', 'application/json');
@@ -120,8 +136,8 @@ exports.deleteAuthorization = function(args, res, next) {
   /**
    * 承認解除
    *
-   * transactionId String ID
-   * authorizationId String authorization ID
+   * transactionId String 取引ID
+   * authorizationId String 承認ID
    * no response value expected for this operation
    **/
   res.end();
@@ -131,8 +147,8 @@ exports.deleteNotification = function(args, res, next) {
   /**
    * 取引通知削除
    *
-   * id String ID
-   * notificationId String ID
+   * transactionId String 取引ID
+   * notificationId String 通知ID
    * no response value expected for this operation
    **/
   res.end();
@@ -142,7 +158,8 @@ exports.enableInquiryOfTransaction = function(args, res, next) {
   /**
    * 取引照会キー作成
    *
-   * transactionId String ID
+   * transactionId String 取引ID
+   * data Data_10 取引照会キー
    * no response value expected for this operation
    **/
   res.end();

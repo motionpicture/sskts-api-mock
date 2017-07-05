@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  description: "シネマサンシャインAPI  詳しくはこちら [https://sskts-api-development-mock.azurewebsites.net](https://sskts-api-development-mock.azurewebsites.net)"
+  description: "シネマサンシャインAPI"
   version: "9.0.0"
   title: "sskts-api-mock"
   termsOfService: ""
@@ -27,6 +27,7 @@ tags:
   description: "会員リソースの操作"
 schemes:
 - "http"
+- "https"
 paths:
   /performances:
     get:
@@ -476,14 +477,20 @@ paths:
       parameters:
       - name: "transactionId"
         in: "path"
-        description: "ID"
+        description: "取引ID"
         required: true
         type: "string"
+      - in: "body"
+        name: "data"
+        description: "GMOオーソリデータ"
+        required: true
+        schema:
+          $ref: "#/definitions/data_7"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_6"
         400:
           description: "不適切なリクエスト"
           schema:
@@ -500,14 +507,20 @@ paths:
       parameters:
       - name: "transactionId"
         in: "path"
-        description: "ID"
+        description: "取引ID"
         required: true
         type: "string"
+      - in: "body"
+        name: "data"
+        description: "COA仮予約データ"
+        required: true
+        schema:
+          $ref: "#/definitions/data_8"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_6"
         400:
           description: "不適切なリクエスト"
           schema:
@@ -524,14 +537,20 @@ paths:
       parameters:
       - name: "transactionId"
         in: "path"
-        description: "ID"
+        description: "取引ID"
         required: true
         type: "string"
+      - in: "body"
+        name: "data"
+        description: "ムビチケ着券データ"
+        required: true
+        schema:
+          $ref: "#/definitions/data_9"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_6"
         400:
           description: "不適切なリクエスト"
           schema:
@@ -548,12 +567,12 @@ paths:
       parameters:
       - name: "transactionId"
         in: "path"
-        description: "ID"
+        description: "取引ID"
         required: true
         type: "string"
       - name: "authorizationId"
         in: "path"
-        description: "authorization ID"
+        description: "承認ID"
         required: true
         type: "string"
       responses:
@@ -575,9 +594,15 @@ paths:
       parameters:
       - name: "transactionId"
         in: "path"
-        description: "ID"
+        description: "取引ID"
         required: true
         type: "string"
+      - in: "body"
+        name: "data"
+        description: "取引照会キー"
+        required: true
+        schema:
+          $ref: "#/definitions/data_10"
       responses:
         204:
           description: "レスポンスなし"
@@ -586,7 +611,7 @@ paths:
           schema:
             $ref: "#/definitions/inline_response_400"
       x-swagger-router-controller: "Transaction"
-  /transactions/{id}/notifications/email:
+  /transactions/{transactionId}/notifications/email:
     post:
       tags:
       - "transaction"
@@ -595,22 +620,28 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "transactionId"
         in: "path"
-        description: "ID"
+        description: "取引ID"
         required: true
         type: "string"
+      - in: "body"
+        name: "data"
+        description: "メール通知データ"
+        required: true
+        schema:
+          $ref: "#/definitions/data_11"
       responses:
         200:
           description: "ok"
           schema:
-            $ref: "#/definitions/inline_response_200_1"
+            $ref: "#/definitions/inline_response_200_7"
         400:
           description: "不適切なリクエスト"
           schema:
             $ref: "#/definitions/inline_response_400"
       x-swagger-router-controller: "Transaction"
-  /transactions/{id}/notifications/{notificationId}:
+  /transactions/{transactionId}/notifications/{notificationId}:
     delete:
       tags:
       - "transaction"
@@ -619,14 +650,14 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "transactionId"
         in: "path"
-        description: "ID"
+        description: "取引ID"
         required: true
         type: "string"
       - name: "notificationId"
         in: "path"
-        description: "ID"
+        description: "通知ID"
         required: true
         type: "string"
       responses:
@@ -637,7 +668,7 @@ paths:
           schema:
             $ref: "#/definitions/inline_response_400"
       x-swagger-router-controller: "Transaction"
-  /transactions/{id}/close:
+  /transactions/{transactionId}/close:
     patch:
       tags:
       - "transaction"
@@ -646,9 +677,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "transactionId"
         in: "path"
-        description: "ID"
+        description: "取引ID"
         required: true
         type: "string"
       responses:
@@ -660,9 +691,16 @@ paths:
             $ref: "#/definitions/inline_response_400"
       x-swagger-router-controller: "Transaction"
 securityDefinitions:
+  oauth_password:
+    type: "oauth2"
+    tokenUrl: "https://sskts-api-development-mock.azurewebsites.net/oauth/token"
+    flow: "password"
+    scopes:
+      performances: "パフォーマンス更新"
+      performances.read-only: "パフォーマンス読み込み"
   oauth_implicit:
     type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/token"
+    authorizationUrl: "https://sskts-api-development-mock.azurewebsites.net/oauth/token"
     flow: "implicit"
     scopes:
       performances: "パフォーマンス更新"
@@ -727,16 +765,21 @@ definitions:
         example: ""
       attributes:
         $ref: "#/definitions/inline_response_200_5_data_attributes"
-  Tag:
+  TransactionInquiryKey:
     type: "object"
     properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
+      inquiry_theater:
         type: "string"
-    xml:
-      name: "Tag"
+        example: ""
+        description: "劇場コード"
+      inquiry_id:
+        type: "string"
+        example: ""
+        description: "予約番号"
+      inquiry_pass:
+        type: "string"
+        example: ""
+        description: "電話番号"
   Performance:
     type: "object"
     required:
@@ -1144,6 +1187,260 @@ definitions:
     properties:
       data:
         $ref: "#/definitions/ownersmecards_data"
+  data_7:
+    type: "object"
+    properties:
+      owner_from:
+        type: "string"
+        example: ""
+      owner_to:
+        type: "string"
+        example: ""
+      gmo_shop_id:
+        type: "string"
+        example: ""
+      gmo_shop_pass:
+        type: "string"
+        example: ""
+      gmo_order_id:
+        type: "string"
+        example: ""
+      gmo_amount:
+        type: "string"
+        example: ""
+      gmo_access_id:
+        type: "string"
+        example: ""
+      gmo_access_pass:
+        type: "string"
+        example: ""
+      gmo_job_cd:
+        type: "string"
+        example: ""
+      gmo_pay_type:
+        type: "string"
+        example: ""
+  inline_response_200_6_data:
+    properties:
+      type:
+        type: "string"
+        example: "authorizations"
+      id:
+        type: "string"
+        example: ""
+  inline_response_200_6:
+    properties:
+      data:
+        $ref: "#/definitions/inline_response_200_6_data"
+  transactionstransactionIdauthorizationscoaSeatReservation_seats:
+    properties:
+      performance:
+        type: "string"
+        example: ""
+      screen_section:
+        type: "string"
+        example: ""
+      seat_code:
+        type: "string"
+        example: ""
+      ticket_code:
+        type: "string"
+        example: ""
+      ticket_name:
+        $ref: "#/definitions/inline_response_200_4_attributes_ticket_name"
+      ticket_name_kana:
+        type: "string"
+        example: ""
+      std_price:
+        type: "integer"
+        example: ""
+      add_price:
+        type: "integer"
+        example: ""
+      dis_price:
+        type: "integer"
+        example: ""
+      sale_price:
+        type: "integer"
+        example: ""
+      mvtk_app_price:
+        type: "integer"
+        example: ""
+      add_glasses:
+        type: "integer"
+        example: ""
+      kbn_eisyahousiki:
+        type: "string"
+        example: ""
+      mvtk_num:
+        type: "string"
+        example: ""
+      mvtk_kbn_denshiken:
+        type: "string"
+        example: ""
+      mvtk_kbn_maeuriken:
+        type: "string"
+        example: ""
+      mvtk_kbn_kensyu:
+        type: "string"
+        example: ""
+      mvtk_sales_price:
+        type: "integer"
+        example: ""
+  data_8:
+    type: "object"
+    properties:
+      owner_from:
+        type: "string"
+        example: ""
+      owner_to:
+        type: "string"
+        example: ""
+      coa_tmp_reserve_num:
+        type: "integer"
+        example: ""
+      coa_theater_code:
+        type: "string"
+        example: ""
+      coa_date_jouei:
+        type: "string"
+        example: ""
+      coa_title_code:
+        type: "string"
+        example: ""
+      coa_title_branch_num:
+        type: "string"
+        example: ""
+      coa_time_begin:
+        type: "string"
+        example: ""
+      coa_screen_code:
+        type: "string"
+        example: ""
+      seats:
+        type: "array"
+        items:
+          $ref: "#/definitions/transactionstransactionIdauthorizationscoaSeatReservation_seats"
+      price:
+        type: "integer"
+        example: ""
+  transactionstransactionIdauthorizationsmvtk_knsh_info:
+    properties:
+      knsh_typ:
+        type: "string"
+        example: ""
+      mi_num:
+        type: "string"
+        example: ""
+  transactionstransactionIdauthorizationsmvtk_knyknr_no_info:
+    properties:
+      knyknr_no:
+        type: "string"
+        example: ""
+      pin_cd:
+        type: "string"
+        example: ""
+      knsh_info:
+        type: "array"
+        items:
+          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_knsh_info"
+  transactionstransactionIdauthorizationsmvtk_zsk_info:
+    properties:
+      zsk_cd:
+        type: "string"
+        example: ""
+  data_9:
+    type: "object"
+    properties:
+      owner_from:
+        type: "string"
+        example: ""
+      owner_to:
+        type: "string"
+        example: ""
+      price:
+        type: "integer"
+        example: ""
+      kgygish_cd:
+        type: "string"
+        example: ""
+      yyk_dvc_typ:
+        type: "string"
+        example: ""
+      trksh_flg:
+        type: "string"
+        example: ""
+      kgygish_sstm_zskyyk_no:
+        type: "string"
+        example: ""
+      kgygish_usr_zskyyk_no:
+        type: "string"
+        example: ""
+      jei_dt:
+        type: "string"
+        example: ""
+      kij_ymd:
+        type: "string"
+        example: ""
+      st_cd:
+        type: "string"
+        example: ""
+      scren_cd:
+        type: "string"
+        example: ""
+      knyknr_no_info:
+        type: "array"
+        items:
+          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_knyknr_no_info"
+      zsk_info:
+        type: "array"
+        items:
+          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_zsk_info"
+      skhn_cd:
+        type: "string"
+        example: ""
+  data_10:
+    type: "object"
+    properties:
+      inquiry_theater:
+        type: "string"
+        example: ""
+        description: "劇場コード"
+      inquiry_id:
+        type: "string"
+        example: ""
+        description: "予約番号"
+      inquiry_pass:
+        type: "string"
+        example: ""
+        description: "電話番号"
+  data_11:
+    type: "object"
+    properties:
+      from:
+        type: "string"
+        example: ""
+      to:
+        type: "string"
+        example: ""
+      subject:
+        type: "string"
+        example: ""
+      content:
+        type: "string"
+        example: ""
+  inline_response_200_7_data:
+    properties:
+      type:
+        type: "string"
+        example: "notifications"
+      id:
+        type: "string"
+        example: ""
+  inline_response_200_7:
+    properties:
+      data:
+        $ref: "#/definitions/inline_response_200_7_data"
 responses:
   OK:
     description: "ok"

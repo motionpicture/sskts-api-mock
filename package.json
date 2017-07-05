@@ -1,9 +1,10 @@
 {
   "name": "sskts-api-mock",
   "version": "9.0.0",
-  "description": "シネマサンシャインAPI  詳しくはこちら [https://sskts-api-development-mock.azurewebsites.net](https://sskts-api-development-mock.azurewebsites.net)",
+  "description": "シネマサンシャインAPI",
   "main": "index.js",
   "scripts": {
+    "prestart": "npm install",
     "start": "node index.js"
   },
   "keywords": [
