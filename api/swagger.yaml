@@ -1,0 +1,822 @@
+---
+swagger: "2.0"
+info:
+  description: "シネマサンシャインAPI  詳しくはこちら [https://sskts-api-development-mock.azurewebsites.net](https://sskts-api-development-mock.azurewebsites.net)"
+  version: "9.0.0"
+  title: "sskts-api-mock"
+  termsOfService: ""
+  contact:
+    email: "yamazaki@motionpicture.jp"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "sskts-api-development-mock.azurewebsites.net"
+basePath: "/"
+tags:
+- name: "performance"
+  description: "パフォーマンスリソースの操作"
+- name: "film"
+  description: "作品リソースの操作"
+- name: "screen"
+  description: "スクリーンリソースの操作"
+- name: "theater"
+  description: "劇場リソースの操作"
+- name: "transaction"
+  description: "取引リソースの操作"
+- name: "owner"
+  description: "会員リソースの操作"
+schemes:
+- "http"
+paths:
+  /performances:
+    get:
+      tags:
+      - "performance"
+      summary: "パフォーマンス検索"
+      description: ""
+      operationId: "searchPerformances"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      security:
+      - oauth_implicit:
+        - "performances"
+        - "performances.read-only"
+      x-swagger-router-controller: "Performance"
+  /performances/{performanceId}:
+    get:
+      tags:
+      - "performance"
+      summary: "Find performance by ID"
+      description: "Returns a single performance"
+      operationId: "findPerformanceById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "performanceId"
+        in: "path"
+        description: "パフォーマンスID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_200_data"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        404:
+          description: "見つかりませんでした"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+      security:
+      - api_key: []
+      x-swagger-router-controller: "Performance"
+  /films/{filmId}:
+    get:
+      tags:
+      - "film"
+      summary: "作品取得"
+      operationId: "findFilmById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "filmId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        404:
+          description: "見つかりませんでした"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+      x-swagger-router-controller: "Film"
+  /screens/{screenId}:
+    get:
+      tags:
+      - "screen"
+      summary: "スクリーン取得"
+      operationId: "findScreenById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "screenId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        404:
+          description: "見つかりませんでした"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+      x-swagger-router-controller: "Screen"
+  /theaters:
+    get:
+      tags:
+      - "theater"
+      summary: "劇場検索"
+      operationId: "findTheatersById"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Theater"
+  /theaters/{theaterId}:
+    get:
+      tags:
+      - "theater"
+      summary: "劇場取得"
+      operationId: "findTheaterById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "theaterId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        404:
+          description: "見つかりませんでした"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+      x-swagger-router-controller: "Theater"
+  /owners/me/profile:
+    get:
+      tags:
+      - "owner"
+      summary: "会員プロフィール取得"
+      operationId: "findMyProfile"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        404:
+          description: "見つかりませんでした"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+      x-swagger-router-controller: "Owner"
+    put:
+      tags:
+      - "owner"
+      summary: "会員プロフィール更新"
+      operationId: "updateMyProfile"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        204:
+          description: "レスポンスなし"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Owner"
+  /owners/me/cards:
+    get:
+      tags:
+      - "owner"
+      summary: "会員カード検索"
+      operationId: "findMyCards"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Owner"
+    post:
+      tags:
+      - "owner"
+      summary: "会員カード追加"
+      operationId: "createMyCard"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        201:
+          description: "created"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Owner"
+  /owners/me/cards/{cardId}:
+    delete:
+      tags:
+      - "owner"
+      summary: "会員カード削除"
+      operationId: "deleteMyCard"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cardId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "レスポンスなし"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Owner"
+  /owners/me/assets/seatReservation:
+    get:
+      tags:
+      - "owner"
+      summary: "会員座席予約資産検索"
+      operationId: "findMySeatReservationAssets"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Owner"
+  /transactions/startIfPossible:
+    post:
+      tags:
+      - "transaction"
+      summary: "取引開始"
+      operationId: "startTransaction"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        404:
+          description: "見つかりませんでした"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+      x-swagger-router-controller: "Transaction"
+  /transactions/makeInquiry:
+    post:
+      tags:
+      - "transaction"
+      summary: "取引照会"
+      operationId: "makeInquiryOfTransaction"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        404:
+          description: "見つかりませんでした"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{transactionId}:
+    get:
+      tags:
+      - "transaction"
+      summary: "取引取得"
+      operationId: "findTransactionById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "transactionId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        404:
+          description: "見つかりませんでした"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{transactionId}/anonymousOwner:
+    patch:
+      tags:
+      - "transaction"
+      summary: "取引中匿名所有者更新"
+      operationId: "updateAnonymousOwner"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "transactionId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "レスポンスなし"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{transactionId}/owners/:ownerId:
+    put:
+      tags:
+      - "transaction"
+      summary: "取引中所有者更新"
+      operationId: "updateOwnerInTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "transactionId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{transactionId}/owners/:ownerId/cards:
+    post:
+      tags:
+      - "transaction"
+      summary: "取引中所有者カード追加"
+      operationId: "createCardOfOwnerInTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "transactionId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        201:
+          description: "created"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{transactionId}/authorizations/gmo:
+    post:
+      tags:
+      - "transaction"
+      summary: "GMO承認追加"
+      operationId: "createGMOAuthorization"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "transactionId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{transactionId}/authorizations/coaSeatReservation:
+    post:
+      tags:
+      - "transaction"
+      summary: "座席予約承認追加"
+      operationId: "createSeatReservationAuthorization"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "transactionId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{transactionId}/authorizations/mvtk:
+    post:
+      tags:
+      - "transaction"
+      summary: "ムビチケ承認追加"
+      operationId: "createMvtkAuthorization"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "transactionId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{transactionId}/authorizations/{authorizationId}:
+    delete:
+      tags:
+      - "transaction"
+      summary: "承認解除"
+      operationId: "deleteAuthorization"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "transactionId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      - name: "authorizationId"
+        in: "path"
+        description: "authorization ID"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "レスポンスなし"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{transactionId}/enableInquiry:
+    patch:
+      tags:
+      - "transaction"
+      summary: "取引照会キー作成"
+      operationId: "enableInquiryOfTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "transactionId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "レスポンスなし"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{id}/notifications/email:
+    post:
+      tags:
+      - "transaction"
+      summary: "取引通知作成"
+      operationId: "createEmailNotification"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_404"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{id}/notifications/{notificationId}:
+    delete:
+      tags:
+      - "transaction"
+      summary: "取引通知削除"
+      operationId: "deleteNotification"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      - name: "notificationId"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "レスポンスなし"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+  /transactions/{id}/close:
+    patch:
+      tags:
+      - "transaction"
+      summary: "取引成立"
+      operationId: "closeTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "レスポンスなし"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+      x-swagger-router-controller: "Transaction"
+securityDefinitions:
+  oauth_implicit:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/token"
+    flow: "implicit"
+    scopes:
+      performances: "パフォーマンス更新"
+      performances.read-only: "パフォーマンス読み込み"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Order:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      petId:
+        type: "integer"
+        format: "int64"
+      quantity:
+        type: "integer"
+        format: "int32"
+      shipDate:
+        type: "string"
+        format: "date-time"
+      status:
+        type: "string"
+        description: "Order Status"
+        enum:
+        - "placed"
+        - "approved"
+        - "delivered"
+      complete:
+        type: "boolean"
+        default: false
+    xml:
+      name: "Order"
+  Category:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Category"
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
+    xml:
+      name: "User"
+  Tag:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Tag"
+  Performance:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+        example: "doggie"
+      photoUrls:
+        type: "array"
+        xml:
+          name: "photoUrl"
+          wrapped: true
+        items:
+          type: "string"
+  inline_response_200_data:
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+        example: "doggie"
+      photoUrls:
+        type: "array"
+        items:
+          type: "string"
+  inline_response_200:
+    properties:
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_data"
+  inline_response_400_source:
+    properties:
+      parameter:
+        type: "string"
+  inline_response_400_errors:
+    properties:
+      title:
+        type: "string"
+      detail:
+        type: "string"
+      source:
+        $ref: "#/definitions/inline_response_400_source"
+  inline_response_400:
+    properties:
+      errors:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_400_errors"
+  inline_response_404:
+    properties:
+      data:
+        type: "object"
+        properties: {}
+responses:
+  OK:
+    description: "ok"
+    schema:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          properties: {}
+  NoContent:
+    description: "レスポンスなし"
+  NotFound:
+    description: "見つかりませんでした"
+    schema:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          properties: {}
+  BadRequest:
+    description: "不適切なリクエスト"
+    schema:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              title:
+                type: "string"
+              detail:
+                type: "string"
+              source:
+                type: "object"
+                properties:
+                  parameter:
+                    type: "string"
