@@ -5,6 +5,7 @@ var http = require('http');
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var fs = require('fs');
+var cors = require('cors');
 var serverPort = normalizePort((process.env.PORT === undefined) ? '8080' : process.env.PORT);
 function normalizePort(val) {
   const portNumber = parseInt(val, 10);
@@ -46,6 +47,8 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 
   // Serve the Swagger documents and Swagger UI
   app.use(middleware.swaggerUi());
+
+  app.use(cors());
 
   // Start the server
   http.createServer(app).listen(serverPort, function () {
