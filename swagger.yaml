@@ -47,7 +47,7 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/definitions/Performance'
+                  type: object
         '400':
           $ref: '#/responses/BadRequest'
       security:
@@ -71,9 +71,7 @@ paths:
           type: string
       responses:
         '200':
-          description: ok
-          schema:
-            $ref: '#/definitions/Performance'
+          $ref: '#/responses/OK'
         '400':
           $ref: '#/responses/BadRequest'
         '404':
@@ -166,7 +164,12 @@ paths:
         - application/json
       responses:
         '200':
-          $ref: '#/responses/OK'
+          description: 'ok'
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/OwnerProfile'
         '400':
           $ref: '#/responses/BadRequest'
         '404':
@@ -178,6 +181,13 @@ paths:
       operationId: updateMyProfile
       produces:
         - application/json
+      parameters:
+        - name: data
+          in: body
+          description: ID
+          required: true
+          schema:
+            $ref: '#/definitions/OwnerProfile'
       responses:
         '204':
           $ref: '#/responses/NoContent'
@@ -193,7 +203,14 @@ paths:
         - application/json
       responses:
         '200':
-          $ref: '#/responses/OK'
+          description: 'ok'
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Card'
         '400':
           $ref: '#/responses/BadRequest'
     post:
@@ -203,9 +220,21 @@ paths:
       operationId: createMyCard
       produces:
         - application/json
+      parameters:
+        - name: data
+          in: body
+          description: ID
+          required: true
+          schema:
+            $ref: '#/definitions/UnsavedCard'
       responses:
         '201':
-          description: created
+          description: ok
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Card'
         '400':
           $ref: '#/responses/BadRequest'
   /owners/me/cards/{cardId}:
@@ -237,7 +266,14 @@ paths:
         - application/json
       responses:
         '200':
-          $ref: '#/responses/OK'
+          description: ok
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/SeatReservationAsset'
         '400':
           $ref: '#/responses/BadRequest'
   /transactions/startIfPossible:
@@ -248,9 +284,25 @@ paths:
       operationId: startTransaction
       produces:
         - application/json
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              expires_at:
+                description: 取引期限
+                type: string
+                example: ''
       responses:
         '200':
-          $ref: '#/responses/OK'
+          description: ok
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Transaction'
         '400':
           $ref: '#/responses/BadRequest'
         '404':
@@ -263,30 +315,34 @@ paths:
       operationId: makeInquiryOfTransaction
       produces:
         - application/json
-      responses:
-        '200':
-          $ref: '#/responses/OK'
-        '400':
-          $ref: '#/responses/BadRequest'
-        '404':
-          $ref: '#/responses/NotFound'
-  /transactions/{transactionId}:
-    get:
-      tags:
-        - transaction
-      summary: 取引取得
-      operationId: findTransactionById
-      produces:
-        - application/json
       parameters:
-        - name: transactionId
-          in: path
-          description: ID
+        - name: data
+          in: body
+          description: 照会キー
           required: true
-          type: string
+          schema:
+            type: object
+            properties:
+              inquiry_theater:
+                description: 劇場コード
+                type: string
+                example: ''
+              inquiry_id:
+                description: 予約番号
+                type: string
+                example: ''
+              inquiry_pass:
+                description: 電話番号
+                type: string
+                example: ''
       responses:
         '200':
-          $ref: '#/responses/OK'
+          description: ok
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Transaction'
         '400':
           $ref: '#/responses/BadRequest'
         '404':
@@ -305,12 +361,31 @@ paths:
           description: ID
           required: true
           type: string
+        - name: data
+          in: body
+          description: プロフィール
+          required: true
+          schema:
+            type: object
+            properties:
+              name_first:
+                type: string
+                example: ''
+              name_last:
+                type: string
+                example: ''
+              email:
+                type: string
+                example: ''
+              tel:
+                type: string
+                example: ''  
       responses:
         '204':
           $ref: '#/responses/NoContent'
         '400':
           $ref: '#/responses/BadRequest'
-  /transactions/{transactionId}/owners/:ownerId:
+  /transactions/{transactionId}/owners/{ownerId}:
     put:
       tags:
         - transaction
@@ -321,12 +396,65 @@ paths:
       parameters:
         - name: transactionId
           in: path
-          description: ID
+          description: 取引ID
           required: true
           type: string
+        - name: ownerId
+          in: path
+          description: 所有者ID
+          required: true
+          type: string
+        - name: data
+          in: body
+          description: プロフィール
+          required: true
+          schema:
+            type: object
+            properties:
+              data:
+               type: object
+               properties:
+                type:
+                  type: string
+                  example: 'owners'
+                id:
+                  type: string
+                  example: ''
+                attributes:
+                  type: object
+                  properties:
+                    name_first:
+                      type: string
+                      example: ''
+                    name_last:
+                      type: string
+                      example: ''
+                    email:
+                      type: string
+                      example: ''
+                    tel:
+                      type: string
+                      example: ''
+                    group:
+                      type: string
+                      example: ''
+                      enum:
+                        - "ANONYMOUS"
+                        - "MEMBER"
+                    username:
+                      type: string
+                      example: ''
+                    password:
+                      type: string
+                      example: ''
       responses:
         '200':
-          $ref: '#/responses/OK'
+          description: 'ok'
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/OwnerProfile'
         '400':
           $ref: '#/responses/BadRequest'
   /transactions/{transactionId}/owners/:ownerId/cards:
@@ -343,9 +471,20 @@ paths:
           description: ID
           required: true
           type: string
+        - name: data
+          in: body
+          description: カード情報
+          required: true
+          schema:
+            $ref: '#/definitions/UnsavedCard'
       responses:
         '201':
-          description: created
+          description: ok
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Card'
         '400':
           $ref: '#/responses/BadRequest'
   /transactions/{transactionId}/authorizations/gmo:
@@ -523,67 +662,246 @@ securityDefinitions:
     name: api_key
     in: header
 definitions:
-  Order:
+  OwnerProfile:
     type: object
     properties:
+      type:
+        type: string
+        example: owners
       id:
-        type: integer
-        format: int64
-      petId:
-        type: integer
-        format: int64
-      quantity:
-        type: integer
-        format: int32
-      shipDate:
         type: string
-        format: date-time
-      status:
-        type: string
-        description: Order Status
-        enum:
-          - placed
-          - approved
-          - delivered
-      complete:
-        type: boolean
-        default: false
-    xml:
-      name: Order
-  Category:
+      attributes:
+        type: object
+        properties:
+          name_first:
+            type: string
+            example: ''
+          name_last:
+            type: string
+            example: ''
+          email:
+            type: string
+            example: ''
+          tel:
+            type: string
+            example: ''
+  UnsavedCard:
     type: object
     properties:
-      id:
-        type: integer
-        format: int64
-      name:
-        type: string
-    xml:
-      name: Category
-  User:
+      data:
+        type: object
+        properties:
+          type:
+            type: string
+            example: cards
+          attributes:
+            type: object
+            properties:
+              card_no:
+                type: string
+              card_pass:
+                type: string
+              expire:
+                type: string
+              holder_name:
+                type: string
+              token:
+                type: string
+  Card:
     type: object
     properties:
+      type:
+        type: string
+        example: cards
       id:
-        type: integer
-        format: int64
-      username:
         type: string
-      firstName:
+        example: ''
+      attributes:
+        type: object
+        properties:
+          card_seq:
+            type: string
+            example: ''
+          card_name:
+            type: string
+            example: ''
+          card_no:
+            type: string
+            example: ''
+          expire:
+            type: string
+            example: ''
+          holder_name:
+            type: string
+            example: ''
+  MultilingualString:
+    type: object
+    properties:
+      en:
+       type: string
+      ja:
+       type: string
+  SeatReservationAsset:
+    type: object
+    properties:
+      type:
         type: string
-      lastName:
+        example: assets
+      id:
         type: string
-      email:
+        example: ''
+      attributes:
+        type: object
+        properties:
+          performance:
+            type: string
+            example: ''
+          screen_section:
+            type: string
+            example: ''
+          seat_code:
+            type: string
+            example: ''
+          ticket_code:
+            type: string
+            example: ''
+          ticket_name:
+            $ref: '#/definitions/MultilingualString'
+          ticket_name_kana:
+            type: string
+            example: ''
+          std_price:
+            type: integer
+            format: int64
+            example: ''
+          add_price:
+            type: integer
+            format: int64
+            example: ''
+          dis_price:
+            type: integer
+            format: int64
+            example: ''
+          sale_price:
+            type: integer
+            format: int64
+            example: ''
+          add_glasses:
+            type: integer
+            format: int64
+            example: ''
+          mvtk_app_price:
+            type: integer
+            format: int64
+            example: ''
+          kbn_eisyahousiki:
+            type: string
+            example: ''
+          mvtk_num:
+            type: string
+            example: ''
+          mvtk_kbn_denshiken:
+            type: string
+            example: ''
+          mvtk_kbn_maeuriken:
+            type: string
+            example: ''
+          mvtk_kbn_kensyu:
+            type: string
+            example: ''
+          mvtk_sales_price:
+            type: integer
+            format: int64
+            example: ''
+          theater:
+            type: string
+            example: ''
+          screen:
+            type: string
+            example: ''
+          film:
+            type: string
+            example: ''
+          performance_day:
+            type: string
+            example: ''
+          performance_time_start:
+            type: string
+            example: ''
+          performance_time_end:
+            type: string
+            example: ''
+          theater_name:
+            $ref: '#/definitions/MultilingualString'
+          theater_name_kana:
+            type: string
+            example: ''
+          theater_address:
+            $ref: '#/definitions/MultilingualString'
+          screen_name:
+            $ref: '#/definitions/MultilingualString'
+          film_name:
+            $ref: '#/definitions/MultilingualString'
+          film_name_kana:
+            type: string
+            example: ''
+          film_name_short:
+            type: string
+            example: ''
+          film_name_original:
+            type: string
+            example: ''
+          film_minutes:
+            type: integer
+            format: int64
+            example: ''
+          film_kbn_eirin:
+            type: string
+            example: ''
+          film_kbn_eizou:
+            type: string
+            example: ''
+          film_kbn_joueihousiki:
+            type: string
+            example: ''
+          film_kbn_jimakufukikae:
+            type: string
+            example: ''
+          film_copyright:
+            type: string
+            example: ''
+  Transaction:
+    type: object
+    properties:
+      type:
         type: string
-      password:
+        example: transactions
+      id:
         type: string
-      phone:
-        type: string
-      userStatus:
-        type: integer
-        format: int32
-        description: User Status
-    xml:
-      name: User
+        example: ''
+      attributes:
+        type: object
+        properties:
+          status:
+            type: string
+            example: ''
+          owners:
+            type: object
+            properties:
+              id:
+                type: string
+                example: ''
+              group:
+                type: string
+                example: ''
+          expires_at:
+            type: string
+            format: date-time
+            example: ''
+          started_at:
+            type: string
+            format: date-time
+            example: ''
   Tag:
     type: object
     properties:

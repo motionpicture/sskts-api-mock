@@ -6,13 +6,11 @@ exports.findPerformanceById = function(args, res, next) {
    * Returns a single performance
    *
    * performanceId String パフォーマンスID
-   * returns inline_response_200_data
+   * returns inline_response_200_1
    **/
   var examples = {};
   examples['application/json'] = {
-  "photoUrls" : [ "aeiou" ],
-  "name" : "doggie",
-  "id" : "aeiou"
+  "data" : "{}"
 };
   if (Object.keys(examples).length > 0) {
     res.setHeader('Content-Type', 'application/json');
@@ -31,11 +29,7 @@ exports.searchPerformances = function(args, res, next) {
    **/
   var examples = {};
   examples['application/json'] = {
-  "data" : [ {
-    "photoUrls" : [ "aeiou" ],
-    "name" : "doggie",
-    "id" : "aeiou"
-  } ]
+  "data" : [ "{}" ]
 };
   if (Object.keys(examples).length > 0) {
     res.setHeader('Content-Type', 'application/json');

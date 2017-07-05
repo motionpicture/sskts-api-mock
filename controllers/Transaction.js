@@ -40,10 +40,6 @@ module.exports.enableInquiryOfTransaction = function enableInquiryOfTransaction 
   Transaction.enableInquiryOfTransaction(req.swagger.params, res, next);
 };
 
-module.exports.findTransactionById = function findTransactionById (req, res, next) {
-  Transaction.findTransactionById(req.swagger.params, res, next);
-};
-
 module.exports.makeInquiryOfTransaction = function makeInquiryOfTransaction (req, res, next) {
   Transaction.makeInquiryOfTransaction(req.swagger.params, res, next);
 };

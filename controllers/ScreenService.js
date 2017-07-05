@@ -5,7 +5,7 @@ exports.findScreenById = function(args, res, next) {
    * スクリーン取得
    *
    * screenId String ID
-   * returns inline_response_404
+   * returns inline_response_200_1
    **/
   var examples = {};
   examples['application/json'] = {
