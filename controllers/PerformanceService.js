@@ -2,10 +2,11 @@
 
 exports.findPerformanceById = function(args, res, next) {
   /**
-   * Find performance by ID
-   * Returns a single performance
+   * パフォーマンス取得
+   * IDでパフォーマンス情報を取得します。
    *
    * performanceId String パフォーマンスID
+   * authorization String Bearerトークン
    * returns inline_response_200_2
    **/
   var examples = {};
@@ -23,8 +24,9 @@ exports.findPerformanceById = function(args, res, next) {
 exports.searchPerformances = function(args, res, next) {
   /**
    * パフォーマンス検索
-   * 
+   * 条件を指定してパフォーマンスを検索します。
    *
+   * authorization String Bearerトークン
    * returns inline_response_200_1
    **/
   var examples = {};

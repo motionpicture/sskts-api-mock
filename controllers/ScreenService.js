@@ -3,8 +3,10 @@
 exports.findScreenById = function(args, res, next) {
   /**
    * スクリーン取得
+   * IDでスクリーン情報を取得します。
    *
    * screenId String ID
+   * authorization String Bearerトークン
    * returns inline_response_200_2
    **/
   var examples = {};

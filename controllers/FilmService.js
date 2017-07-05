@@ -3,8 +3,10 @@
 exports.findFilmById = function(args, res, next) {
   /**
    * 作品取得
+   * IDで作品情報を取得します。
    *
    * filmId String ID
+   * authorization String Bearerトークン
    * returns inline_response_200_2
    **/
   var examples = {};

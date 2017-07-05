@@ -3,8 +3,10 @@
 exports.findTheaterById = function(args, res, next) {
   /**
    * 劇場取得
+   * IDで劇場情報を取得します。
    *
    * theaterId String ID
+   * authorization String Bearerトークン
    * returns inline_response_200_2
    **/
   var examples = {};
@@ -22,7 +24,9 @@ exports.findTheaterById = function(args, res, next) {
 exports.findTheatersById = function(args, res, next) {
   /**
    * 劇場検索
+   * 条件を指定して劇場を検索します。
    *
+   * authorization String Bearerトークン
    * returns inline_response_200_2
    **/
   var examples = {};

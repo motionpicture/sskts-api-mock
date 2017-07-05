@@ -3,7 +3,7 @@
 exports.getAccessToken = function(args, res, next) {
   /**
    * OAuth
-   * 
+   * OAuth認可エンドポイント。アクセストークンを取得します。
    *
    * data Data ID
    * returns inline_response_200

@@ -13,6 +13,8 @@ info:
 host: sskts-api-development-mock.azurewebsites.net
 basePath: /
 tags:
+  - name: oauth
+    description: OAuth認可
   - name: performance
     description: パフォーマンスリソースの操作
   - name: film
@@ -27,14 +29,13 @@ tags:
     description: 会員リソースの操作
 schemes:
   - http
-  - https
 paths:
   /oauth/token:
     post:
       tags:
        - oauth
       summary: OAuth
-      description: ''
+      description: 'OAuth認可エンドポイント。アクセストークンを取得します。'
       operationId: getAccessToken
       produces:
         - application/json
@@ -76,11 +77,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /performances:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     get:
       tags:
         - performance
       summary: パフォーマンス検索
-      description: ''
+      description: '条件を指定してパフォーマンスを検索します。'
       operationId: searchPerformances
       produces:
         - application/json
@@ -100,11 +103,13 @@ paths:
       security:
         - oauth_application: [performances, performances.read-only]
   /performances/{performanceId}:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     get:
       tags:
         - performance
-      summary: Find performance by ID
-      description: Returns a single performance
+      summary: パフォーマンス取得
+      description: IDでパフォーマンス情報を取得します。
       operationId: findPerformanceById
       produces:
         - application/json
@@ -122,10 +127,13 @@ paths:
         403: {$ref: '#/responses/Forbidden'}
         404: {$ref: '#/responses/NotFound'}
   /films/{filmId}:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     get:
       tags:
         - film
       summary: 作品取得
+      description: 'IDで作品情報を取得します。'
       operationId: findFilmById
       produces:
         - application/json
@@ -143,10 +151,13 @@ paths:
         403: {$ref: '#/responses/Forbidden'}
         404: {$ref: '#/responses/NotFound'}
   /screens/{screenId}:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     get:
       tags:
         - screen
       summary: スクリーン取得
+      description: 'IDでスクリーン情報を取得します。'
       operationId: findScreenById
       produces:
         - application/json
@@ -164,10 +175,13 @@ paths:
         403: {$ref: '#/responses/Forbidden'}
         404: {$ref: '#/responses/NotFound'}
   /theaters:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     get:
       tags:
         - theater
       summary: 劇場検索
+      description: '条件を指定して劇場を検索します。'
       operationId: findTheatersById
       produces:
         - application/json
@@ -178,10 +192,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /theaters/{theaterId}:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     get:
       tags:
         - theater
       summary: 劇場取得
+      description: 'IDで劇場情報を取得します。'
       operationId: findTheaterById
       produces:
         - application/json
@@ -199,10 +216,13 @@ paths:
         403: {$ref: '#/responses/Forbidden'}
         404: {$ref: '#/responses/NotFound'}
   /owners/me/profile:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     get:
       tags:
         - owner
       summary: 会員プロフィール取得
+      description: 'ログイン中の会員のプロフィールを取得します。'
       operationId: findMyProfile
       produces:
         - application/json
@@ -220,18 +240,18 @@ paths:
         404: {$ref: '#/responses/NotFound'}
       security:
         - oauth_password: [owners.profile, owners.profile.read-only]
-
     put:
       tags:
         - owner
       summary: 会員プロフィール更新
+      description: 'ログイン中の会員のプロフィールを更新します。'
       operationId: updateMyProfile
       produces:
         - application/json
       parameters:
         - name: data
           in: body
-          description: ID
+          description: プロフィール
           required: true
           schema:
             $ref: '#/definitions/OwnerProfile'
@@ -241,10 +261,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /owners/me/cards:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     get:
       tags:
         - owner
       summary: 会員カード検索
+      description: 'ログイン中の会員のカードを検索します。'
       operationId: findMyCards
       produces:
         - application/json
@@ -265,16 +288,12 @@ paths:
       tags:
         - owner
       summary: 会員カード追加
+      description: 'ログイン中の会員のカードを作成します。'
       operationId: createMyCard
       produces:
         - application/json
       parameters:
-        - name: data
-          in: body
-          description: ID
-          required: true
-          schema:
-            $ref: '#/definitions/UnsavedCard'
+        - $ref: '#/parameters/PresavedCard'
       responses:
         '201':
           description: ok
@@ -287,17 +306,20 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /owners/me/cards/{cardId}:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     delete:
       tags:
         - owner
       summary: 会員カード削除
+      description: 'ログイン中の会員のカードを削除します。'
       operationId: deleteMyCard
       produces:
         - application/json
       parameters:
         - name: cardId
           in: path
-          description: ID
+          description: カードID
           required: true
           type: string
       responses:
@@ -306,10 +328,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /owners/me/assets/seatReservation:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     get:
       tags:
         - owner
       summary: 会員座席予約資産検索
+      description: 'ログイン中の会員の座席予約資産を検索します。'
       operationId: findMySeatReservationAssets
       produces:
         - application/json
@@ -327,10 +352,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /transactions/startIfPossible:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     post:
       tags:
         - transaction
       summary: 取引開始
+      description: '取引を開始します。'
       operationId: startTransaction
       produces:
         - application/json
@@ -358,10 +386,13 @@ paths:
         403: {$ref: '#/responses/Forbidden'}
         404: {$ref: '#/responses/NotFound'}
   /transactions/makeInquiry:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     post:
       tags:
         - transaction
       summary: 取引照会
+      description: '予約番号と電話番号を使用して、取引を照会します。'
       operationId: makeInquiryOfTransaction
       produces:
         - application/json
@@ -385,10 +416,13 @@ paths:
         403: {$ref: '#/responses/Forbidden'}
         404: {$ref: '#/responses/NotFound'}
   /transactions/{transactionId}/anonymousOwner:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     patch:
       tags:
         - transaction
       summary: 取引中匿名所有者更新
+      description: '取引中の匿名所有者のプロフィールを更新します。'
       operationId: updateAnonymousOwner
       produces:
         - application/json
@@ -422,11 +456,15 @@ paths:
         400: {$ref: '#/responses/BadRequest'}
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
+      deprecated: true
   /transactions/{transactionId}/owners/{ownerId}:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     put:
       tags:
         - transaction
       summary: 取引中所有者更新
+      description: '取引中の所有者のプロフィールを更新します。'
       operationId: updateOwnerInTransaction
       produces:
         - application/json
@@ -495,10 +533,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/owners/:ownerId/cards:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     post:
       tags:
         - transaction
       summary: 取引中所有者カード追加
+      description: '取引中の所有者のカードを作成します。'
       operationId: createCardOfOwnerInTransaction
       produces:
         - application/json
@@ -508,12 +549,7 @@ paths:
           description: ID
           required: true
           type: string
-        - name: data
-          in: body
-          description: カード情報
-          required: true
-          schema:
-            $ref: '#/definitions/UnsavedCard'
+        - $ref: '#/parameters/PresavedCard'
       responses:
         '201':
           description: ok
@@ -526,10 +562,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/authorizations/gmo:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     post:
       tags:
         - transaction
       summary: GMO承認追加
+      description: '進行中の取引にGMO承認を追加します。'
       operationId: createGMOAuthorization
       produces:
         - application/json
@@ -595,10 +634,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/authorizations/coaSeatReservation:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     post:
       tags:
         - transaction
       summary: 座席予約承認追加
+      description: '進行中の取引に座席予約承認を追加します。'
       operationId: createSeatReservationAuthorization
       produces:
         - application/json
@@ -722,10 +764,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/authorizations/mvtk:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     post:
       tags:
         - transaction
       summary: ムビチケ承認追加
+      description: '進行中の取引にムビチケ承認を追加します。'
       operationId: createMvtkAuthorization
       produces:
         - application/json
@@ -830,10 +875,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/authorizations/{authorizationId}:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     delete:
       tags:
         - transaction
       summary: 承認解除
+      description: '進行中の取引から承認を解除します。'
       operationId: deleteAuthorization
       produces:
         - application/json
@@ -854,10 +902,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/enableInquiry:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     patch:
       tags:
         - transaction
       summary: 取引照会キー作成
+      description: '取引を成立後に照会できるように、照会キーを作成します。'
       operationId: enableInquiryOfTransaction
       produces:
         - application/json
@@ -879,10 +930,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/notifications/email:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     post:
       tags:
         - transaction
       summary: 取引通知作成
+      description: '進行中の取引に対して、成立後の通知を作成します。'
       operationId: createEmailNotification
       produces:
         - application/json
@@ -930,10 +984,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/notifications/{notificationId}:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     delete:
       tags:
         - transaction
       summary: 取引通知削除
+      description: '進行中の取引から、成立後の通知を削除します。'
       operationId: deleteNotification
       produces:
         - application/json
@@ -954,10 +1011,13 @@ paths:
         401: {$ref: '#/responses/Unauthorized'}
         403: {$ref: '#/responses/Forbidden'}
   /transactions/{transactionId}/close:
+    parameters:
+      - $ref: '#/parameters/AuthorizationHeader'
     patch:
       tags:
         - transaction
       summary: 取引成立
+      description: '取引を成立させます。'
       operationId: closeTransaction
       produces:
         - application/json
@@ -1003,6 +1063,7 @@ securityDefinitions:
       transactions.notifications: 取引通知書き込み
 definitions:
   Credentials:
+    description: 認証情報
     type: object
     properties:
       access_token:
@@ -1018,6 +1079,7 @@ definitions:
         example: ''
         description: 有効期間(秒)
   OwnerProfile:
+    description: 所有者プロフィール
     type: object
     properties:
       type:
@@ -1029,40 +1091,23 @@ definitions:
         type: object
         properties:
           name_first:
+            description: 名
             type: string
-            example: ''
+            example: 'てつ'
           name_last:
+            description: 姓
             type: string
-            example: ''
+            example: 'やまざき'
           email:
+            description: メールアドレス
             type: string
-            example: ''
+            example: 'yamazaki@motionpicture.jp'
           tel:
+            description: 電話番号
             type: string
-            example: ''
-  UnsavedCard:
-    type: object
-    properties:
-      data:
-        type: object
-        properties:
-          type:
-            type: string
-            enum: [cards]
-          attributes:
-            type: object
-            properties:
-              card_no:
-                type: string
-              card_pass:
-                type: string
-              expire:
-                type: string
-              holder_name:
-                type: string
-              token:
-                type: string
+            example: '09012345678'
   Card:
+    description: カード情報
     type: object
     properties:
       type:
@@ -1075,28 +1120,39 @@ definitions:
         type: object
         properties:
           card_seq:
+            description: カード登録連番
             type: string
-            example: ''
+            example: '0'
           card_name:
+            description: カード会社略称
             type: string
-            example: ''
+            example: 'Visa'
           card_no:
+            description: カード番号
             type: string
-            example: ''
+            example: '*************111'
           expire:
+            description: 有効期限
             type: string
-            example: ''
+            example: '18/12'
           holder_name:
+            description: 名義人
             type: string
-            example: ''
+            example: 'Tetsu Yamazaki'
   MultilingualString:
+    description: 多言語文字列
     type: object
     properties:
       en:
-       type: string
+        description: 英語
+        type: string
+        example: string
       ja:
-       type: string
+        description: 日本語
+        type: string
+        example: 文字列
   SeatReservationAsset:
+    description: 座席予約資産
     type: object
     properties:
       type:
@@ -1226,6 +1282,7 @@ definitions:
             type: string
             example: ''
   Transaction:
+    description: 取引
     type: object
     properties:
       type:
@@ -1238,9 +1295,11 @@ definitions:
         type: object
         properties:
           status:
+            description: 取引状態
             type: string
-            example: ''
+            enum: [UNDERWAY, CLOSED, EXPIRED]
           owners:
+            description: 取引中所有者リスト
             type: object
             properties:
               id:
@@ -1250,14 +1309,17 @@ definitions:
                 type: string
                 example: ''
           expires_at:
+            description: 取引進行期限日時
             type: string
             format: date-time
             example: ''
           started_at:
+            description: 取引開始日時
             type: string
             format: date-time
             example: ''
   TransactionInquiryKey:
+    description: 取引照会キー
     type: object
     properties:
       inquiry_theater:
@@ -1273,10 +1335,52 @@ definitions:
         type: string
         example: ''
   Performance:
+    description: パフォーマンス
     type: object
     properties:
       day:
         type: string
+parameters:
+  # アクセストークン送信ヘッダー
+  AuthorizationHeader:
+    in: header
+    name: Authorization
+    type: string
+    required: true
+    description: Bearerトークン
+  PresavedCard:
+    name: data
+    in: body
+    description: 登録前カード情報
+    required: true
+    schema:
+      description: 登録前カード情報
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [cards]
+            attributes:
+              type: object
+              properties:
+                card_no:
+                  description: カード番号
+                  type: string
+                card_pass:
+                  description: パスワード
+                  type: string
+                expire:
+                  description: 有効期限
+                  type: string
+                holder_name:
+                  description: 名義人
+                  type: string
+                token:
+                  description: トークン化カード情報
+                  type: string
 responses:
   # 200
   OK:

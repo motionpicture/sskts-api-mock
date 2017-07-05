@@ -3,19 +3,21 @@
 exports.createMyCard = function(args, res, next) {
   /**
    * 会員カード追加
+   * ログイン中の会員のカードを作成します。
    *
-   * data Data_2 ID
+   * data Data_2 登録前カード情報
+   * authorization String Bearerトークン
    * returns inline_response_201
    **/
   var examples = {};
   examples['application/json'] = {
   "data" : {
     "attributes" : {
-      "card_no" : "",
-      "card_seq" : "",
-      "expire" : "",
-      "card_name" : "",
-      "holder_name" : ""
+      "card_no" : "*************111",
+      "card_seq" : "0",
+      "expire" : "18/12",
+      "card_name" : "Visa",
+      "holder_name" : "Tetsu Yamazaki"
     },
     "id" : "",
     "type" : "aeiou"
@@ -32,8 +34,10 @@ exports.createMyCard = function(args, res, next) {
 exports.deleteMyCard = function(args, res, next) {
   /**
    * 会員カード削除
+   * ログイン中の会員のカードを削除します。
    *
-   * cardId String ID
+   * cardId String カードID
+   * authorization String Bearerトークン
    * no response value expected for this operation
    **/
   res.end();
@@ -42,18 +46,20 @@ exports.deleteMyCard = function(args, res, next) {
 exports.findMyCards = function(args, res, next) {
   /**
    * 会員カード検索
+   * ログイン中の会員のカードを検索します。
    *
+   * authorization String Bearerトークン
    * returns inline_response_200_4
    **/
   var examples = {};
   examples['application/json'] = {
   "data" : [ {
     "attributes" : {
-      "card_no" : "",
-      "card_seq" : "",
-      "expire" : "",
-      "card_name" : "",
-      "holder_name" : ""
+      "card_no" : "*************111",
+      "card_seq" : "0",
+      "expire" : "18/12",
+      "card_name" : "Visa",
+      "holder_name" : "Tetsu Yamazaki"
     },
     "id" : "",
     "type" : "aeiou"
@@ -70,17 +76,19 @@ exports.findMyCards = function(args, res, next) {
 exports.findMyProfile = function(args, res, next) {
   /**
    * 会員プロフィール取得
+   * ログイン中の会員のプロフィールを取得します。
    *
+   * authorization String Bearerトークン
    * returns inline_response_200_3
    **/
   var examples = {};
   examples['application/json'] = {
   "data" : {
     "attributes" : {
-      "name_first" : "",
-      "tel" : "",
-      "name_last" : "",
-      "email" : ""
+      "name_first" : "てつ",
+      "tel" : "09012345678",
+      "name_last" : "やまざき",
+      "email" : "yamazaki@motionpicture.jp"
     },
     "id" : "aeiou",
     "type" : "aeiou"
@@ -97,7 +105,9 @@ exports.findMyProfile = function(args, res, next) {
 exports.findMySeatReservationAssets = function(args, res, next) {
   /**
    * 会員座席予約資産検索
+   * ログイン中の会員の座席予約資産を検索します。
    *
+   * authorization String Bearerトークン
    * returns inline_response_200_5
    **/
   var examples = {};
@@ -116,8 +126,8 @@ exports.findMySeatReservationAssets = function(args, res, next) {
       "add_glasses" : "",
       "film_kbn_jimakufukikae" : "",
       "ticket_name" : {
-        "ja" : "aeiou",
-        "en" : "aeiou"
+        "ja" : "文字列",
+        "en" : "string"
       },
       "performance_time_end" : "",
       "ticket_name_kana" : "",
@@ -161,8 +171,10 @@ exports.findMySeatReservationAssets = function(args, res, next) {
 exports.updateMyProfile = function(args, res, next) {
   /**
    * 会員プロフィール更新
+   * ログイン中の会員のプロフィールを更新します。
    *
-   * data Data_1 ID
+   * data Data_1 プロフィール
+   * authorization String Bearerトークン
    * no response value expected for this operation
    **/
   res.end();
