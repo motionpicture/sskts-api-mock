@@ -4,54 +4,62 @@ var url = require('url');
 
 var Transaction = require('./TransactionService');
 
-module.exports.closeTransaction = function closeTransaction (req, res, next) {
-  Transaction.closeTransaction(req.swagger.params, res, next);
+module.exports.transactions_close = function transactions_close (req, res, next) {
+  Transaction.transactions_close(req.swagger.params, res, next);
 };
 
-module.exports.createCardOfOwnerInTransaction = function createCardOfOwnerInTransaction (req, res, next) {
-  Transaction.createCardOfOwnerInTransaction(req.swagger.params, res, next);
+module.exports.transactions_createCard = function transactions_createCard (req, res, next) {
+  Transaction.transactions_createCard(req.swagger.params, res, next);
 };
 
-module.exports.createEmailNotification = function createEmailNotification (req, res, next) {
-  Transaction.createEmailNotification(req.swagger.params, res, next);
+module.exports.transactions_createEmailNotification = function transactions_createEmailNotification (req, res, next) {
+  Transaction.transactions_createEmailNotification(req.swagger.params, res, next);
 };
 
-module.exports.createGMOAuthorization = function createGMOAuthorization (req, res, next) {
-  Transaction.createGMOAuthorization(req.swagger.params, res, next);
+module.exports.transactions_createGMOAuthorization = function transactions_createGMOAuthorization (req, res, next) {
+  Transaction.transactions_createGMOAuthorization(req.swagger.params, res, next);
 };
 
-module.exports.createMvtkAuthorization = function createMvtkAuthorization (req, res, next) {
-  Transaction.createMvtkAuthorization(req.swagger.params, res, next);
+module.exports.transactions_createInquiryKey = function transactions_createInquiryKey (req, res, next) {
+  Transaction.transactions_createInquiryKey(req.swagger.params, res, next);
 };
 
-module.exports.createSeatReservationAuthorization = function createSeatReservationAuthorization (req, res, next) {
-  Transaction.createSeatReservationAuthorization(req.swagger.params, res, next);
+module.exports.transactions_createMvtkAuthorization = function transactions_createMvtkAuthorization (req, res, next) {
+  Transaction.transactions_createMvtkAuthorization(req.swagger.params, res, next);
 };
 
-module.exports.deleteAuthorization = function deleteAuthorization (req, res, next) {
-  Transaction.deleteAuthorization(req.swagger.params, res, next);
+module.exports.transactions_createSeatReservationAuthorization = function transactions_createSeatReservationAuthorization (req, res, next) {
+  Transaction.transactions_createSeatReservationAuthorization(req.swagger.params, res, next);
 };
 
-module.exports.deleteNotification = function deleteNotification (req, res, next) {
-  Transaction.deleteNotification(req.swagger.params, res, next);
+module.exports.transactions_deleteAuthorization = function transactions_deleteAuthorization (req, res, next) {
+  Transaction.transactions_deleteAuthorization(req.swagger.params, res, next);
 };
 
-module.exports.enableInquiryOfTransaction = function enableInquiryOfTransaction (req, res, next) {
-  Transaction.enableInquiryOfTransaction(req.swagger.params, res, next);
+module.exports.transactions_deleteNotification = function transactions_deleteNotification (req, res, next) {
+  Transaction.transactions_deleteNotification(req.swagger.params, res, next);
 };
 
-module.exports.makeInquiryOfTransaction = function makeInquiryOfTransaction (req, res, next) {
-  Transaction.makeInquiryOfTransaction(req.swagger.params, res, next);
+module.exports.transactions_enableInquiry = function transactions_enableInquiry (req, res, next) {
+  Transaction.transactions_enableInquiry(req.swagger.params, res, next);
 };
 
-module.exports.startTransaction = function startTransaction (req, res, next) {
-  Transaction.startTransaction(req.swagger.params, res, next);
+module.exports.transactions_findByInquiryKey = function transactions_findByInquiryKey (req, res, next) {
+  Transaction.transactions_findByInquiryKey(req.swagger.params, res, next);
 };
 
-module.exports.updateAnonymousOwner = function updateAnonymousOwner (req, res, next) {
-  Transaction.updateAnonymousOwner(req.swagger.params, res, next);
+module.exports.transactions_makeInquiry = function transactions_makeInquiry (req, res, next) {
+  Transaction.transactions_makeInquiry(req.swagger.params, res, next);
 };
 
-module.exports.updateOwnerInTransaction = function updateOwnerInTransaction (req, res, next) {
-  Transaction.updateOwnerInTransaction(req.swagger.params, res, next);
+module.exports.transactions_start = function transactions_start (req, res, next) {
+  Transaction.transactions_start(req.swagger.params, res, next);
+};
+
+module.exports.transactions_updateAnonymousOwner = function transactions_updateAnonymousOwner (req, res, next) {
+  Transaction.transactions_updateAnonymousOwner(req.swagger.params, res, next);
+};
+
+module.exports.transactions_updateOwner = function transactions_updateOwner (req, res, next) {
+  Transaction.transactions_updateOwner(req.swagger.params, res, next);
 };

@@ -577,7 +577,7 @@ paths:
       - "transaction"
       summary: "取引開始"
       description: "取引を開始します。"
-      operationId: "startTransaction"
+      operationId: "transactions_start"
       produces:
       - "application/json"
       parameters:
@@ -617,13 +617,69 @@ paths:
           schema:
             $ref: "#/definitions/inline_response_200_2"
       x-swagger-router-controller: "Transaction"
+  /transactions/findByInquiryKey:
+    get:
+      tags:
+      - "transaction"
+      summary: "取引照会"
+      description: "照会キーで取引を検索します。具体的には、劇場コード&予約番号&電話番号による照会です。"
+      operationId: "transactions_findByInquiryKey"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "theater_code"
+        in: "query"
+        description: "劇場コード"
+        required: false
+        type: "string"
+      - name: "reserve_num"
+        in: "query"
+        description: "予約番号"
+        required: false
+        type: "integer"
+      - name: "tel"
+        in: "query"
+        description: "電話番号"
+        required: false
+        type: "string"
+      - name: "Authorization"
+        in: "header"
+        description: "Bearerトークン"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            $ref: "#/definitions/inline_response_200_6"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
+        404:
+          description: "見つかりませんでした"
+          schema:
+            $ref: "#/definitions/inline_response_200_2"
+      x-swagger-router-controller: "Transaction"
   /transactions/makeInquiry:
     post:
       tags:
       - "transaction"
       summary: "取引照会"
       description: "予約番号と電話番号を使用して、取引を照会します。"
-      operationId: "makeInquiryOfTransaction"
+      operationId: "transactions_makeInquiry"
       produces:
       - "application/json"
       parameters:
@@ -663,6 +719,7 @@ paths:
           description: "見つかりませんでした"
           schema:
             $ref: "#/definitions/inline_response_200_2"
+      deprecated: true
       x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/anonymousOwner:
     patch:
@@ -670,7 +727,7 @@ paths:
       - "transaction"
       summary: "取引中匿名所有者更新"
       description: "取引中の匿名所有者のプロフィールを更新します。"
-      operationId: "updateAnonymousOwner"
+      operationId: "transactions_updateAnonymousOwner"
       produces:
       - "application/json"
       parameters:
@@ -717,7 +774,7 @@ paths:
       - "transaction"
       summary: "取引中所有者更新"
       description: "取引中の所有者のプロフィールを更新します。"
-      operationId: "updateOwnerInTransaction"
+      operationId: "transactions_updateOwner"
       produces:
       - "application/json"
       parameters:
@@ -770,7 +827,7 @@ paths:
       - "transaction"
       summary: "取引中所有者カード追加"
       description: "取引中の所有者のカードを作成します。"
-      operationId: "createCardOfOwnerInTransaction"
+      operationId: "transactions_createCard"
       produces:
       - "application/json"
       parameters:
@@ -818,7 +875,7 @@ paths:
       - "transaction"
       summary: "GMO承認追加"
       description: "進行中の取引にGMO承認を追加します。"
-      operationId: "createGMOAuthorization"
+      operationId: "transactions_createGMOAuthorization"
       produces:
       - "application/json"
       parameters:
@@ -866,7 +923,7 @@ paths:
       - "transaction"
       summary: "座席予約承認追加"
       description: "進行中の取引に座席予約承認を追加します。"
-      operationId: "createSeatReservationAuthorization"
+      operationId: "transactions_createSeatReservationAuthorization"
       produces:
       - "application/json"
       parameters:
@@ -914,7 +971,7 @@ paths:
       - "transaction"
       summary: "ムビチケ承認追加"
       description: "進行中の取引にムビチケ承認を追加します。"
-      operationId: "createMvtkAuthorization"
+      operationId: "transactions_createMvtkAuthorization"
       produces:
       - "application/json"
       parameters:
@@ -962,7 +1019,7 @@ paths:
       - "transaction"
       summary: "承認解除"
       description: "進行中の取引から承認を解除します。"
-      operationId: "deleteAuthorization"
+      operationId: "transactions_deleteAuthorization"
       produces:
       - "application/json"
       parameters:
@@ -1001,13 +1058,13 @@ paths:
             enum:
             - "Forbidden"
       x-swagger-router-controller: "Transaction"
-  /transactions/{transactionId}/enableInquiry:
-    patch:
+  /transactions/{transactionId}/inquiryKey:
+    put:
       tags:
       - "transaction"
       summary: "取引照会キー作成"
       description: "取引を成立後に照会できるように、照会キーを作成します。"
-      operationId: "enableInquiryOfTransaction"
+      operationId: "transactions_createInquiryKey"
       produces:
       - "application/json"
       parameters:
@@ -1047,13 +1104,60 @@ paths:
             enum:
             - "Forbidden"
       x-swagger-router-controller: "Transaction"
+  /transactions/{transactionId}/enableInquiry:
+    patch:
+      tags:
+      - "transaction"
+      summary: "取引照会キー作成"
+      description: "取引を成立後に照会できるように、照会キーを作成します。"
+      operationId: "transactions_enableInquiry"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "transactionId"
+        in: "path"
+        description: "取引ID"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "data"
+        description: "取引照会キー"
+        required: true
+        schema:
+          $ref: "#/definitions/data_12"
+      - name: "Authorization"
+        in: "header"
+        description: "Bearerトークン"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "レスポンスなし"
+        400:
+          description: "不適切なリクエスト"
+          schema:
+            $ref: "#/definitions/inline_response_400"
+        401:
+          description: "認証が必要"
+          schema:
+            type: "string"
+            enum:
+            - "Unauthorized"
+        403:
+          description: "アクセス権限なし"
+          schema:
+            type: "string"
+            enum:
+            - "Forbidden"
+      deprecated: true
+      x-swagger-router-controller: "Transaction"
   /transactions/{transactionId}/notifications/email:
     post:
       tags:
       - "transaction"
       summary: "取引通知作成"
       description: "進行中の取引に対して、成立後の通知を作成します。"
-      operationId: "createEmailNotification"
+      operationId: "transactions_createEmailNotification"
       produces:
       - "application/json"
       parameters:
@@ -1067,7 +1171,7 @@ paths:
         description: "メール通知データ"
         required: true
         schema:
-          $ref: "#/definitions/data_12"
+          $ref: "#/definitions/data_13"
       - name: "Authorization"
         in: "header"
         description: "Bearerトークン"
@@ -1101,7 +1205,7 @@ paths:
       - "transaction"
       summary: "取引通知削除"
       description: "進行中の取引から、成立後の通知を削除します。"
-      operationId: "deleteNotification"
+      operationId: "transactions_deleteNotification"
       produces:
       - "application/json"
       parameters:
@@ -1146,7 +1250,7 @@ paths:
       - "transaction"
       summary: "取引成立"
       description: "取引を成立させます。"
-      operationId: "closeTransaction"
+      operationId: "transactions_close"
       produces:
       - "application/json"
       parameters:
@@ -1292,6 +1396,22 @@ definitions:
   TransactionInquiryKey:
     type: "object"
     properties:
+      theater_code:
+        type: "string"
+        example: "118"
+        description: "劇場コード"
+      reserve_num:
+        type: "integer"
+        example: 123
+        description: "予約番号"
+      tel:
+        type: "string"
+        example: "09012345678"
+        description: "電話番号"
+    description: "取引照会キー"
+  TransactionInquiryKey2:
+    type: "object"
+    properties:
       inquiry_theater:
         type: "string"
         example: ""
@@ -1311,6 +1431,145 @@ definitions:
       day:
         type: "string"
     description: "パフォーマンス"
+  GMOAuthorizationAttributes:
+    type: "object"
+    properties:
+      owner_from:
+        type: "string"
+        example: ""
+      owner_to:
+        type: "string"
+        example: ""
+      gmo_shop_id:
+        type: "string"
+        example: ""
+      gmo_shop_pass:
+        type: "string"
+        example: ""
+      gmo_order_id:
+        type: "string"
+        example: ""
+      gmo_amount:
+        type: "string"
+        example: ""
+      gmo_access_id:
+        type: "string"
+        example: ""
+      gmo_access_pass:
+        type: "string"
+        example: ""
+      gmo_job_cd:
+        type: "string"
+        example: ""
+      gmo_pay_type:
+        type: "string"
+        example: ""
+    description: "GMO承認"
+  COASeatReservationAuthorizationAttributes:
+    type: "object"
+    properties:
+      owner_from:
+        type: "string"
+        example: ""
+      owner_to:
+        type: "string"
+        example: ""
+      coa_tmp_reserve_num:
+        type: "integer"
+        example: ""
+      coa_theater_code:
+        type: "string"
+        example: ""
+      coa_date_jouei:
+        type: "string"
+        example: ""
+      coa_title_code:
+        type: "string"
+        example: ""
+      coa_title_branch_num:
+        type: "string"
+        example: ""
+      coa_time_begin:
+        type: "string"
+        example: ""
+      coa_screen_code:
+        type: "string"
+        example: ""
+      seats:
+        type: "array"
+        items:
+          $ref: "#/definitions/transactionstransactionIdauthorizationscoaSeatReservation_data_attributes_seats"
+      price:
+        type: "integer"
+        example: ""
+    description: "COA座席予約承認"
+  MvtkAuthorizationAttributes:
+    type: "object"
+    properties:
+      owner_from:
+        type: "string"
+        example: ""
+      owner_to:
+        type: "string"
+        example: ""
+      price:
+        type: "integer"
+        example: ""
+      kgygish_cd:
+        type: "string"
+        example: ""
+      yyk_dvc_typ:
+        type: "string"
+        example: ""
+      trksh_flg:
+        type: "string"
+        example: ""
+      kgygish_sstm_zskyyk_no:
+        type: "string"
+        example: ""
+      kgygish_usr_zskyyk_no:
+        type: "string"
+        example: ""
+      jei_dt:
+        type: "string"
+        example: ""
+      kij_ymd:
+        type: "string"
+        example: ""
+      st_cd:
+        type: "string"
+        example: ""
+      scren_cd:
+        type: "string"
+        example: ""
+      knyknr_no_info:
+        type: "array"
+        items:
+          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_data_attributes_knyknr_no_info"
+      zsk_info:
+        type: "array"
+        items:
+          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_data_attributes_zsk_info"
+      skhn_cd:
+        type: "string"
+        example: ""
+    description: "ムビチケ承認"
+  EmailNotificationAttributes:
+    type: "object"
+    properties:
+      from:
+        type: "string"
+        example: "noreply@example.com"
+      to:
+        type: "string"
+        example: "yamazaki@motionpicture.jp"
+      subject:
+        type: "string"
+        example: "件名"
+      content:
+        type: "string"
+        example: "本文"
+    description: "メール通知属性"
   data:
     type: "object"
     properties:
@@ -1781,8 +2040,7 @@ definitions:
       data:
         $ref: "#/definitions/ownersmecards_data"
     description: "登録前カード情報"
-  data_8:
-    type: "object"
+  transactionstransactionIdauthorizationsgmo_data_attributes:
     properties:
       owner_from:
         type: "string"
@@ -1814,6 +2072,21 @@ definitions:
       gmo_pay_type:
         type: "string"
         example: ""
+    description: "GMO承認"
+  transactionstransactionIdauthorizationsgmo_data:
+    properties:
+      type:
+        type: "string"
+        enum:
+        - "authorizations"
+      attributes:
+        $ref: "#/definitions/transactionstransactionIdauthorizationsgmo_data_attributes"
+  data_8:
+    type: "object"
+    properties:
+      data:
+        $ref: "#/definitions/transactionstransactionIdauthorizationsgmo_data"
+    description: "GMOオーソリデータ"
   inline_response_200_7_data:
     properties:
       type:
@@ -1827,7 +2100,7 @@ definitions:
     properties:
       data:
         $ref: "#/definitions/inline_response_200_7_data"
-  transactionstransactionIdauthorizationscoaSeatReservation_seats:
+  transactionstransactionIdauthorizationscoaSeatReservation_data_attributes_seats:
     properties:
       performance:
         type: "string"
@@ -1882,8 +2155,7 @@ definitions:
       mvtk_sales_price:
         type: "integer"
         example: ""
-  data_9:
-    type: "object"
+  transactionstransactionIdauthorizationscoaSeatReservation_data_attributes:
     properties:
       owner_from:
         type: "string"
@@ -1915,11 +2187,26 @@ definitions:
       seats:
         type: "array"
         items:
-          $ref: "#/definitions/transactionstransactionIdauthorizationscoaSeatReservation_seats"
+          $ref: "#/definitions/transactionstransactionIdauthorizationscoaSeatReservation_data_attributes_seats"
       price:
         type: "integer"
         example: ""
-  transactionstransactionIdauthorizationsmvtk_knsh_info:
+    description: "COA座席予約承認"
+  transactionstransactionIdauthorizationscoaSeatReservation_data:
+    properties:
+      type:
+        type: "string"
+        enum:
+        - "authorizations"
+      attributes:
+        $ref: "#/definitions/transactionstransactionIdauthorizationscoaSeatReservation_data_attributes"
+  data_9:
+    type: "object"
+    properties:
+      data:
+        $ref: "#/definitions/transactionstransactionIdauthorizationscoaSeatReservation_data"
+    description: "COA仮予約データ"
+  transactionstransactionIdauthorizationsmvtk_data_attributes_knsh_info:
     properties:
       knsh_typ:
         type: "string"
@@ -1927,7 +2214,7 @@ definitions:
       mi_num:
         type: "string"
         example: ""
-  transactionstransactionIdauthorizationsmvtk_knyknr_no_info:
+  transactionstransactionIdauthorizationsmvtk_data_attributes_knyknr_no_info:
     properties:
       knyknr_no:
         type: "string"
@@ -1938,14 +2225,13 @@ definitions:
       knsh_info:
         type: "array"
         items:
-          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_knsh_info"
-  transactionstransactionIdauthorizationsmvtk_zsk_info:
+          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_data_attributes_knsh_info"
+  transactionstransactionIdauthorizationsmvtk_data_attributes_zsk_info:
     properties:
       zsk_cd:
         type: "string"
         example: ""
-  data_10:
-    type: "object"
+  transactionstransactionIdauthorizationsmvtk_data_attributes:
     properties:
       owner_from:
         type: "string"
@@ -1986,15 +2272,50 @@ definitions:
       knyknr_no_info:
         type: "array"
         items:
-          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_knyknr_no_info"
+          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_data_attributes_knyknr_no_info"
       zsk_info:
         type: "array"
         items:
-          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_zsk_info"
+          $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_data_attributes_zsk_info"
       skhn_cd:
         type: "string"
         example: ""
+    description: "ムビチケ承認"
+  transactionstransactionIdauthorizationsmvtk_data:
+    properties:
+      type:
+        type: "string"
+        enum:
+        - "authorizations"
+      attributes:
+        $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_data_attributes"
+  data_10:
+    type: "object"
+    properties:
+      data:
+        $ref: "#/definitions/transactionstransactionIdauthorizationsmvtk_data"
+    description: "COA仮予約データ"
+  transactionstransactionIdinquiryKey_data:
+    properties:
+      theater_code:
+        type: "string"
+        example: "118"
+        description: "劇場コード"
+      reserve_num:
+        type: "integer"
+        example: 123
+        description: "予約番号"
+      tel:
+        type: "string"
+        example: "09012345678"
+        description: "電話番号"
+    description: "取引照会キー"
   data_11:
+    type: "object"
+    properties:
+      data:
+        $ref: "#/definitions/transactionstransactionIdinquiryKey_data"
+  data_12:
     type: "object"
     properties:
       inquiry_theater:
@@ -2010,21 +2331,35 @@ definitions:
         example: ""
         description: "電話番号"
     description: "取引照会キー"
-  data_12:
-    type: "object"
+  transactionstransactionIdnotificationsemail_data_attributes:
     properties:
       from:
         type: "string"
-        example: ""
+        example: "noreply@example.com"
       to:
         type: "string"
-        example: ""
+        example: "yamazaki@motionpicture.jp"
       subject:
         type: "string"
-        example: ""
+        example: "件名"
       content:
         type: "string"
-        example: ""
+        example: "本文"
+    description: "メール通知属性"
+  transactionstransactionIdnotificationsemail_data:
+    properties:
+      type:
+        type: "string"
+        enum:
+        - "notifications"
+      attributes:
+        $ref: "#/definitions/transactionstransactionIdnotificationsemail_data_attributes"
+  data_13:
+    type: "object"
+    properties:
+      data:
+        $ref: "#/definitions/transactionstransactionIdnotificationsemail_data"
+    description: "メール通知データ"
   inline_response_200_8_data:
     properties:
       type:
